@@ -1,12 +1,29 @@
 "use client";
-import "./globals.css";
-import { darkTheme } from "./theme/themes";
+import { useState, useEffect } from "react";
+import { darkTheme, lightTheme } from "./theme/themes";
 import { ThemeProvider, CssBaseline } from "@mui/material";
+import ThemeSwitchButton from "../components/ThemeSwitchButton";
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const [activeTheme, setActiveTheme] = useState(lightTheme);
+    const [selectedTheme, setSelectedTheme] = useState<"light" | "dark">(
+        "light"
+    );
+    const getActiveTheme = (themeMode: "light" | "dark") => {
+        return themeMode === "light" ? lightTheme : darkTheme;
+    };
+    const toggleTheme = () => {
+        const desiredTheme = selectedTheme === "light" ? "dark" : "light";
+
+        setSelectedTheme(desiredTheme);
+    };
+    useEffect(() => {
+        setActiveTheme(getActiveTheme(selectedTheme));
+    }, [selectedTheme]);
+
     return (
         <html lang='en'>
             <head>
@@ -17,10 +34,17 @@ export default function RootLayout({
                 />
                 <link rel='icon' href='/favicon.ico' />
             </head>
-            <ThemeProvider theme={darkTheme}>
-                <CssBaseline />
-                <body>{children}</body>
-            </ThemeProvider>
+
+            <body>
+                <ThemeProvider theme={activeTheme}>
+                    <CssBaseline />
+                    {children}
+                    <ThemeSwitchButton
+                        activeTheme={activeTheme}
+                        toggleTheme={toggleTheme}
+                    />
+                </ThemeProvider>
+            </body>
         </html>
     );
 }
