@@ -2,9 +2,8 @@
 import "./globals.css";
 import { useState, useEffect, createContext } from "react";
 import { darkTheme, lightTheme } from "./theme/themes";
-import { Container, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Theme } from "@mui/material/styles";
-import ThemeSwitchButton from "../components/ThemeSwitchButton";
 declare module "@mui/material/styles" {
     interface DefaultTheme extends Theme {}
 }
@@ -12,7 +11,10 @@ type themeProps = {
     activeTheme: Theme | string;
     toggleTheme: () => void;
 };
-export const ThemeContext = createContext<themeProps>({activeTheme: 'dark', toggleTheme: () => {}});
+export const ThemeContext = createContext<themeProps>({
+    activeTheme: "dark",
+    toggleTheme: () => {},
+});
 
 export default function RootLayout({
     children,
@@ -48,21 +50,14 @@ export default function RootLayout({
 
             <body>
                 <ThemeProvider theme={activeTheme}>
+                    <ThemeContext.Provider
+                        value={{
+                            activeTheme: activeTheme,
+                            toggleTheme: toggleTheme,
+                        }}>
+                        {children}
+                    </ThemeContext.Provider>
                     <CssBaseline />
-                    <div className='myclass'>
-                        {/* <Navbar
-                            activeTheme={activeTheme}
-                            toggleTheme={toggleTheme}
-                        /> */}
-                        <ThemeContext.Provider
-                            value={{
-                                activeTheme: activeTheme,
-                                toggleTheme: toggleTheme,
-                            }}>
-                            {children}
-                            <ThemeSwitchButton />
-                        </ThemeContext.Provider>
-                    </div>
                 </ThemeProvider>
             </body>
         </html>
