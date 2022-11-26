@@ -1,22 +1,23 @@
-import { IconButton, Box, ThemeProvider, CssBaseline } from "@mui/material";
+"use client";
+import { useContext } from "react";
+import { IconButton} from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { Theme } from "@mui/material/styles";
+import { ThemeContext } from "../app/layout";
 
-declare module "@mui/material/styles" {
-    interface DefaultTheme extends Theme {}
-}
-
-type themeProps = {
-    activeTheme: Theme | string;
-    toggleTheme: () => void;
-};
-
-export default function ThemeSwitchButton(props: themeProps) {
-    const { activeTheme, toggleTheme } = props;
+export default function ThemeSwitchButton() {
+    const theme = useContext(ThemeContext);
     return (
-        <IconButton onClick={toggleTheme} color='inherit'>
-            {activeTheme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
+        <ThemeContext.Consumer>
+            {({ activeTheme, toggleTheme }) => (
+                <IconButton onClick={toggleTheme} color='inherit'>
+                    {activeTheme === "dark" ? (
+                        <Brightness7Icon />
+                    ) : (
+                        <Brightness4Icon />
+                    )}
+                </IconButton>
+            )}
+        </ThemeContext.Consumer>
     );
 }
