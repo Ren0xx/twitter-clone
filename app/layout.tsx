@@ -4,59 +4,22 @@ import { useState, useEffect, createContext } from "react";
 import { darkTheme, lightTheme } from "./theme/themes";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Theme } from "@mui/material/styles";
+import useTheme from "./theme/theme";
 declare module "@mui/material/styles" {
     interface DefaultTheme extends Theme {}
 }
-type themeProps = {
-    activeTheme: Theme | string;
-    toggleTheme: () => void;
-};
-export const ThemeContext = createContext<themeProps>({
-    activeTheme: "dark",
-    toggleTheme: () => {},
-});
-
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const [activeTheme, setActiveTheme] = useState(darkTheme);
-    const [selectedTheme, setSelectedTheme] = useState<"light" | "dark">(
-        "dark"
-    );
-    const getActiveTheme = (themeMode: "light" | "dark") => {
-        return themeMode === "light" ? lightTheme : darkTheme;
-    };
-    const toggleTheme = () => {
-        const desiredTheme = selectedTheme === "light" ? "dark" : "light";
-
-        setSelectedTheme(desiredTheme);
-    };
-    useEffect(() => {
-        setActiveTheme(getActiveTheme(selectedTheme));
-    }, [selectedTheme]);
-
+    const theme = useTheme((state) => state.theme);
     return (
         <html lang='en'>
-            <head>
-                <title>Twitter Clone</title>
-                <meta
-                    name='description'
-                    content='Twitter Clone created with Next 13'
-                />
-                <link rel='icon' href='/favicon.ico' />
-            </head>
-
             <body>
-                <ThemeProvider theme={activeTheme}>
-                    <ThemeContext.Provider
-                        value={{
-                            activeTheme: activeTheme,
-                            toggleTheme: toggleTheme,
-                        }}>
-                        {children}
-                    </ThemeContext.Provider>
+                <ThemeProvider
+                    theme={theme !== "light" ? lightTheme : darkTheme}>
+                    {children}
                     <CssBaseline />
                 </ThemeProvider>
             </body>

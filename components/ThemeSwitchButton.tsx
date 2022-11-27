@@ -2,20 +2,14 @@
 import { IconButton } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { ThemeContext } from "../app/layout";
+import useTheme from "../app/theme/theme";
 
 export default function ThemeSwitchButton() {
+    const theme = useTheme((s)=> s.theme);
+    const setTheme = useTheme((s)=> s.setTheme);
     return (
-        <ThemeContext.Consumer>
-            {({ activeTheme, toggleTheme }) => (
-                <IconButton onClick={toggleTheme} color='inherit'>
-                    {activeTheme === "dark" ? (
-                        <Brightness7Icon />
-                    ) : (
-                        <Brightness4Icon />
-                    )}
-                </IconButton>
-            )}
-        </ThemeContext.Consumer>
+        <IconButton onClick={()=> setTheme(theme === 'light' ? 'dark' : 'light')} color='inherit'>
+            {theme === "dark" ? <Brightness4Icon /> : <Brightness7Icon />}
+        </IconButton>
     );
 }

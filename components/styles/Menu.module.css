@@ -1,0 +1,13 @@
+.menu {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 1.25em;
+    margin-top: 2rem;
+
+}
+
+.menu__item {
+    display: flex;
+    column-gap: 0.5em;
+    font-size: xx-large;
+}
