@@ -1,13 +1,15 @@
 .menu {
     display: flex;
     flex-flow: column nowrap;
-    row-gap: 1.25em;
-    margin-top: 2rem;
-
+    row-gap: 0.55em;
+    justify-content: flex-start;
 }
 
-.menu__item {
+.menu>button {
     display: flex;
     column-gap: 0.5em;
-    font-size: xx-large;
+    justify-content: flex-start;
+    padding: .8em;
+    border-radius: 2em;
+    font-size: medium;
 }

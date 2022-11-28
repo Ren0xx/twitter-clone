@@ -3,29 +3,21 @@ import { Container, Grid, Paper } from "@mui/material";
 import style from "../components/styles/Main.module.css";
 import ThemeSwitchButton from "../components/ThemeSwitchButton";
 import Menu from "../components/Menu";
+import Feed from "../components/Feed";
 export default function Home() {
     return (
-        <Container className={style.main}>
-            <Grid container justifyContent='space-evenly' alignItems='center'>
-                <Grid item xs={2}>
+        <div className={style.main}>
+            <Grid container justifyContent='center' alignItems='flex-start'>
+                <Grid sx={{ position: "sticky", top: "4rem" }} item xs={3}>
                     <Menu />
                 </Grid>
-                <Grid item xs={2}>
-                    <header>Header</header>
+                <Grid item xs={6}>
+                    <Feed />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                     <aside>Sidebar</aside>
                 </Grid>
-                <Grid item xs={2}>
-                    <footer>Footer</footer>
-                </Grid>
-                <Grid item xs={2}>
-                    <main>
-                        <ThemeSwitchButton />
-                        Main feed
-                    </main>
-                </Grid>
             </Grid>
-        </Container>
+        </div>
     );
 }

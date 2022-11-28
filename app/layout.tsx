@@ -2,8 +2,9 @@
 import "./globals.css";
 import { useState, useEffect, createContext } from "react";
 import { darkTheme, lightTheme } from "./theme/themes";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider, Container } from "@mui/material";
 import { Theme } from "@mui/material/styles";
+import Navbar from "../components/Navbar";
 import useTheme from "./theme/theme";
 declare module "@mui/material/styles" {
     interface DefaultTheme extends Theme {}
@@ -17,11 +18,14 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body>
-                <ThemeProvider
-                    theme={theme !== "light" ? lightTheme : darkTheme}>
-                    {children}
-                    <CssBaseline />
-                </ThemeProvider>
+                <Container>
+                    <ThemeProvider
+                        theme={theme !== "light" ? lightTheme : darkTheme}>
+                        <Navbar />
+                        {children}
+                        <CssBaseline />
+                    </ThemeProvider>
+                </Container>
             </body>
         </html>
     );
