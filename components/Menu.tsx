@@ -43,7 +43,11 @@ export default function Menu() {
             </Button>
             <Button
                 variant='contained'
-                sx={{ borderRadius: "2em", padding: "0.75em" }}
+                className={styles.post__button}
+                sx={{
+                    borderRadius: "2em",
+                    mr: "0.8em",
+                }}
                 color='primary'>
                 Tweet
             </Button>

@@ -5,11 +5,18 @@
     justify-content: flex-start;
 }
 
-.menu>button {
+.menu>button,
+.post__button {
     display: flex;
     column-gap: 0.5em;
     justify-content: flex-start;
     padding: .8em;
     border-radius: 2em;
     font-size: medium;
+}
+
+.post__button {
+    border-radius: 2em;
+    margin-right: 0.8em;
+    justify-content: center !important; 
 }

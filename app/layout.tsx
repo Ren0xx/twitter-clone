@@ -6,6 +6,7 @@ import { CssBaseline, ThemeProvider, Container } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import Navbar from "../components/Navbar";
 import useTheme from "./theme/theme";
+import { AnimatePresence } from "framer-motion";
 declare module "@mui/material/styles" {
     interface DefaultTheme extends Theme {}
 }
@@ -22,7 +23,9 @@ export default function RootLayout({
                     <ThemeProvider
                         theme={theme !== "light" ? lightTheme : darkTheme}>
                         <Navbar />
-                        {children}
+                        <AnimatePresence mode='wait' initial={false}>
+                            {children}
+                        </AnimatePresence>
                         <CssBaseline />
                     </ThemeProvider>
                 </Container>
