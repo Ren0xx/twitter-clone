@@ -1,5 +1,4 @@
 .container {
-    background: rgb(22, 22, 22);
     position: absolute;
     top: 0px;
     right: 0px;
@@ -15,4 +14,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.login__card {
+    border-radius: 1.5em;
+    padding: 2em;
+}
+
+.login__card>*>button {
+    border-radius: 2em;
+    padding: 0.7em;
+    min-width: 100%;
 }

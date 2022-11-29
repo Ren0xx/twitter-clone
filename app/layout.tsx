@@ -1,11 +1,10 @@
 "use client";
 import "./globals.css";
-import { useState, useEffect, createContext } from "react";
-import { darkTheme, lightTheme } from "./theme/themes";
+import { darkTheme, lightTheme } from "../components/theme/themes";
 import { CssBaseline, ThemeProvider, Container } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import Navbar from "../components/Navbar";
-import useTheme from "./theme/theme";
+import useTheme from "../components/theme/theme";
 import { AnimatePresence } from "framer-motion";
 declare module "@mui/material/styles" {
     interface DefaultTheme extends Theme {}
@@ -22,7 +21,7 @@ export default function RootLayout({
                 <Container>
                     <ThemeProvider
                         theme={theme !== "light" ? lightTheme : darkTheme}>
-                        <AnimatePresence mode='wait' initial={false}>
+                        <AnimatePresence initial={false}>
                             <Navbar />
                             {children}
                         </AnimatePresence>

@@ -12,6 +12,14 @@ export const darkTheme = createTheme({
           default: '#000000',
           paper: '#16181c',
         },
+        info: {
+          main: '#000000',
+        },
+      },
+      typography: {
+        button: {
+          textTransform: 'none'
+        },
       },
 })
 export const lightTheme = createTheme({
@@ -21,6 +29,14 @@ export const lightTheme = createTheme({
           main: '#1d9bf0'
         },
         secondary: {main: '#1d9bf1'},
+        info: {
+          main: '#ffffff',
+        },
         
+      },
+      typography: {
+        button: {
+          textTransform: 'none',
+        },
       },
 })
