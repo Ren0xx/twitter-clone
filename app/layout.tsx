@@ -22,8 +22,8 @@ export default function RootLayout({
                 <Container>
                     <ThemeProvider
                         theme={theme !== "light" ? lightTheme : darkTheme}>
-                        <Navbar />
                         <AnimatePresence mode='wait' initial={false}>
+                            <Navbar />
                             {children}
                         </AnimatePresence>
                         <CssBaseline />

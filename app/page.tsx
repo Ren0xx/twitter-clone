@@ -1,7 +1,7 @@
 "use client";
-import { Container, Grid, Paper } from "@mui/material";
+import { Grid } from "@mui/material";
+import Link from "next/link";
 import style from "../components/styles/Main.module.css";
-import ThemeSwitchButton from "../components/ThemeSwitchButton";
 import Menu from "../components/Menu";
 import Feed from "../components/Feed";
 import { motion } from "framer-motion";
@@ -18,6 +18,7 @@ export default function Home() {
                 stiffness: 260,
                 damping: 20,
             }}>
+            
             <Grid container justifyContent='center' alignItems='flex-start'>
                 <Grid sx={{ position: "sticky", top: "4rem" }} item xs={3}>
                     <Menu />
@@ -27,6 +28,7 @@ export default function Home() {
                 </Grid>
                 <Grid item xs={3}>
                     <aside>Sidebar</aside>
+                    <Link href='/login'>Click me</Link>
                 </Grid>
             </Grid>
         </motion.div>

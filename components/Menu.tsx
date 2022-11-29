@@ -1,9 +1,7 @@
 import styles from "./styles/Menu.module.css";
-import ThemeSwitchButton from "./ThemeSwitchButton";
-
 import { useTheme } from "@mui/material/styles";
 import { Button, Paper, Box } from "@mui/material";
-
+//icons
 import HomeIcon from "@mui/icons-material/Home";
 import TagIcon from "@mui/icons-material/Tag";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
