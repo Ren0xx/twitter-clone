@@ -1,6 +1,6 @@
 import styles from "./styles/Feed.module.css";
 
-export default function Feed() {
+const Feed = () => {
     return (
         <main className={styles.mainFeed}>
             <h3>Sidebar</h3>
@@ -35,3 +35,4 @@ export default function Feed() {
         </main>
     );
 }
+export default Feed;

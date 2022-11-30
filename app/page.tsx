@@ -18,7 +18,6 @@ export default function Home() {
                 stiffness: 260,
                 damping: 20,
             }}>
-            
             <Grid container justifyContent='center' alignItems='flex-start'>
                 <Grid sx={{ position: "sticky", top: "4rem" }} item xs={3}>
                     <Menu />

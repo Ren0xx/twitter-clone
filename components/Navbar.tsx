@@ -4,9 +4,8 @@ import { AppBar, Box, Stack, Toolbar, Grid, Typography } from "@mui/material";
 import styles from "./styles/Navbar.module.css";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
-export default function Navbar() {
+const Navbar = () => {
     return (
-        <>
             <AppBar className={styles.navbar} position='sticky'>
                 <Grid container>
                     <Grid item xs={3} className={styles.icons}>
@@ -21,6 +20,6 @@ export default function Navbar() {
                     </Grid>
                 </Grid>
             </AppBar>
-        </>
     );
 }
+export default Navbar;

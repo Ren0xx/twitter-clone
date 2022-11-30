@@ -10,7 +10,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MenuIcon from "@mui/icons-material/Menu";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-export default function Menu() {
+const Menu = () => {
     const theme = useTheme();
     const { main, light } = theme.palette.primary;
     return (
@@ -52,3 +52,4 @@ export default function Menu() {
         </div>
     );
 }
+export default Menu;
