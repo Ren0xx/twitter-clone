@@ -10,33 +10,68 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MenuIcon from "@mui/icons-material/Menu";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+
+import Link from "next/link";
+
 const Menu = () => {
     const theme = useTheme();
     const { main, light } = theme.palette.primary;
     return (
         <div className={styles.menu}>
-            <Button color='secondary' startIcon={<HomeIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<HomeIcon />}
+                component={Link}
+                href='/home'>
                 Home
             </Button>
-            <Button color='secondary' startIcon={<TagIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<TagIcon />}
+                component={Link}
+                href='/explore'>
                 Explore
             </Button>
-            <Button color='secondary' startIcon={<NotificationsActiveIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<NotificationsActiveIcon />}
+                component={Link}
+                href='/notifications'>
                 Notifications
             </Button>
-            <Button color='secondary' startIcon={<EmailIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<EmailIcon />}
+                component={Link}
+                href='/messages'>
                 Messages
             </Button>
-            <Button color='secondary' startIcon={<BookmarkIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<BookmarkIcon />}
+                component={Link}
+                href='/bookmarks'>
                 Bookmarks
             </Button>
-            <Button color='secondary' startIcon={<MenuIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<MenuIcon />}
+                component={Link}
+                href='/lists'>
                 Lists
             </Button>
-            <Button color='secondary' startIcon={<PermIdentityIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<PermIdentityIcon />}
+                component={Link}
+                href='/profile'>
                 Profile
             </Button>
-            <Button color='secondary' startIcon={<MoreHorizIcon />}>
+            <Button
+                color='secondary'
+                startIcon={<MoreHorizIcon />}
+                component={Link}
+                href='/more'>
                 More
             </Button>
             <Button
@@ -51,5 +86,5 @@ const Menu = () => {
             </Button>
         </div>
     );
-}
+};
 export default Menu;
