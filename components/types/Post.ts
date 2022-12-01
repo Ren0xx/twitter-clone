@@ -1,9 +1,9 @@
 import type User from './User'
 type Post = {
-    id: string;
+    id?: string;
     title: string;
     body: string;
-    owner: User;
+    owner: string;
     timeAdded: Date;
 }
 

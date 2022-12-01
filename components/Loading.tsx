@@ -1,9 +1,7 @@
 "use client";
 import { Backdrop, CircularProgress } from "@mui/material/";
-import { useState } from "react";
 
 const Loader = () => {
-    // const [open, setOpen] = useState<boolean>(false);
     return (
         <Backdrop
             color='primary'

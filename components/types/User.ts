@@ -1,11 +1,11 @@
 type User = {
-    id: string;
+    id?: string;
     at: string;
     name: string;
     profilePicture?: string;
     joinedDate: Date;
-    following: User[];
-    followers: User[];
+    following?: string[];
+    followers?: string[];
 }
 
 export default User;
