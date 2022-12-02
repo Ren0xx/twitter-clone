@@ -8,6 +8,8 @@ import {
     query,
     collection,
     limit,
+    doc,
+    getDoc,
     QuerySnapshot,
     onSnapshot,
     getFirestore,
@@ -25,6 +27,12 @@ type Posts = {
     isLoading: true | false;
     setPosts: () => void;
 };
+
+type UserData = {
+    user: User | null;
+    isLoading: true | false;
+    getUser: (id: string) => void;
+};
 export const usePosts = create<Posts>((set) => ({
     posts: [],
     isLoading: true,
@@ -35,7 +43,7 @@ export const usePosts = create<Posts>((set) => ({
             querySnapshot.forEach((doc) => {
                 posts.push({
                     id: doc.id,
-                    title: doc.data().title,
+                    replayTo: doc.data().replayTo || "",
                     body: doc.data().body,
                     owner: doc.data().owner,
                     timeAdded: doc.data().timeAdded,
@@ -43,5 +51,27 @@ export const usePosts = create<Posts>((set) => ({
             });
             set({ posts: posts, isLoading: false });
         });
+    },
+}));
+
+export const useUser = create<UserData>((set) => ({
+    user: null,
+    isLoading: true,
+    getUser: async (id: string) => {
+        const docRef = doc(firestore, "users", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const data: User = {
+                at: docSnap.data().at,
+                name: docSnap.data().name,
+                profilePicture: docSnap.data().profilePicture || "",
+                joinedDate: docSnap.data().joinedDate,
+                following: docSnap.data().following || [],
+                followers: docSnap.data().followers || [],
+            };
+            set({ user: data, isLoading: false });
+        } else {
+            set({ user: null, isLoading: false });
+        }
     },
 }));

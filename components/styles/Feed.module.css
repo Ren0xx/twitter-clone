@@ -2,3 +2,16 @@
     border: 1px solid #2f3336;
 
 }
+
+.post {
+    border: 1px solid #2f3336;
+    display: grid;
+    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-rows: 6fr 1fr;
+}
+
+.post img {
+    border-radius: 50%;
+    padding: 0.1em;
+    padding-bottom: 0.5em;
+}
