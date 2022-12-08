@@ -1,8 +1,8 @@
 "use client";
 import create from "zustand";
 import produce from "immer";
-import type Post from "./types/Post";
-import type User from "./types/User";
+import type Post from "../types/Post";
+import type User from "../types/User";
 import { useFirestoreQuery } from "@react-query-firebase/firestore";
 import {
     query,
@@ -15,7 +15,7 @@ import {
     getFirestore,
     DocumentData,
 } from "firebase/firestore";
-import { firestore } from "../firebaseConfig";
+import { firestore } from "../../firebaseConfig";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 // type Users = {

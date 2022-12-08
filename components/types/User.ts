@@ -4,8 +4,10 @@ type User = {
     name: string;
     profilePicture?: string;
     joinedDate: Date;
-    following?: string[];
-    followers?: string[];
+    following: string[];
+    followers: string[];
+    tweets: string[];
+    replies:string[]
 }
 
 export default User;

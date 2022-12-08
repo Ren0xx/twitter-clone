@@ -1,10 +1,12 @@
-import type User from './User'
 type Post = {
-    id?: string;
-    body: string;
-    replayTo?: string;
+    uid: string;
     owner: string;
-    timeAdded: Date;
+    timeAdded: {seconds: string, nanoseconds: string}
+    content: string;
+    replayTo?: string;
+    likes: number;
+    numberOfReplies: number;
+
 }
 
 export default Post;

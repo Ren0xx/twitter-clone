@@ -14,12 +14,21 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/styles/*": ["components/styles/*"],
+      "@/utils/*": ["utils/*"],
+      "@/theme/*": ["components/theme/*"],
+      "@/data/*": ["components/data/*"],
+    },
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/firebaseAdmin.js"],
   "exclude": ["node_modules"]
 }

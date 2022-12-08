@@ -6,11 +6,10 @@ type UserProps = {
     name: string;
 };
 import { useRouter } from "next/navigation";
-import { useUser } from "../../../components/store";
-import Loader from "../../../components/Loading";
-import ErrorNoProfile from "../../../components/Profile/ErrorNoProfile";
+import { useUser } from "@/components/data/store";
+import Loader from "@/components/Loading";
+import ErrorNoProfile from "@/components/Profile/ErrorNoProfile";
 export default function UserProfile() {
-    const router = useRouter();
     const getUser = useUser((state) => state.getUser);
     const user = useUser((state) => state.user);
     const isLoading = useUser((state) => state.isLoading);
@@ -34,6 +33,7 @@ export default function UserProfile() {
         <div>
             <p>{user?.at}</p>
             <p>{user?.name}</p>
+            <p>{user?.at}</p>
         </div>
     );
 }

@@ -1,25 +1,90 @@
-import ThemeSwitchButton from "./ThemeSwitchButton";
-import { Theme } from "@mui/material/styles";
-import { AppBar, Box, Stack, Toolbar, Grid, Typography } from "@mui/material";
-import styles from "./styles/Navbar.module.css";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import styles from "@/styles/Navbar.module.css";
+import { useTheme } from "@mui/material/styles";
+import { Button, Paper, Box } from "@mui/material";
+//icons
+import HomeIcon from "@mui/icons-material/Home";
+import TagIcon from "@mui/icons-material/Tag";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import EmailIcon from "@mui/icons-material/Email";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import MenuIcon from "@mui/icons-material/Menu";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+
+import Link from "next/link";
 
 const Navbar = () => {
+    const theme = useTheme();
+    const { main, light } = theme.palette.primary;
     return (
-            <AppBar className={styles.navbar} position='sticky'>
-                <Grid container>
-                    <Grid item xs={3} className={styles.icons}>
-                        <TwitterIcon color='primary' />
-                        <ThemeSwitchButton />
-                    </Grid>
-                    <Grid className={styles.main} item xs={6}>
-                        <Typography>Home</Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                        Search Bar
-                    </Grid>
-                </Grid>
-            </AppBar>
+        <div className={styles.menu}>
+            <Button
+                color='secondary'
+                startIcon={<HomeIcon />}
+                component={Link}
+                href='/home'>
+                Home
+            </Button>
+            <Button
+                color='secondary'
+                startIcon={<TagIcon />}
+                component={Link}
+                href='/explore'>
+                Explore
+            </Button>
+            <Button
+                color='secondary'
+                startIcon={<NotificationsActiveIcon />}
+                component={Link}
+                href='/notifications'>
+                Notifications
+            </Button>
+            <Button
+                color='secondary'
+                startIcon={<EmailIcon />}
+                component={Link}
+                href='/messages'>
+                Messages
+            </Button>
+            <Button
+                color='secondary'
+                startIcon={<BookmarkIcon />}
+                component={Link}
+                href='/bookmarks'>
+                Bookmarks
+            </Button>
+            <Button
+                color='secondary'
+                startIcon={<MenuIcon />}
+                component={Link}
+                href='/lists'>
+                Lists
+            </Button>
+            <Button
+                color='secondary'
+                startIcon={<PermIdentityIcon />}
+                component={Link}
+                href='/profile'>
+                Profile
+            </Button>
+            <Button
+                color='secondary'
+                startIcon={<MoreHorizIcon />}
+                component={Link}
+                href='/more'>
+                More
+            </Button>
+            <Button
+                variant='contained'
+                className={styles.post__button}
+                sx={{
+                    borderRadius: "2em",
+                    mr: "0.8em",
+                }}
+                color='primary'>
+                Tweet
+            </Button>
+        </div>
     );
-}
+};
 export default Navbar;

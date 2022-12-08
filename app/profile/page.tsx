@@ -10,10 +10,8 @@ import {
 import { firestore } from "../../firebaseConfig";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import type Post from "../../components/types/Post";
-import type User from "../../components/types/User";
 
-import { usePosts } from "../../components/store";
+import { usePosts } from "../../components/data/store";
 export default function Profile() {
     const posts = collection(firestore, "posts");
     const mutationOnPosts = useFirestoreCollectionMutation(posts);
@@ -21,15 +19,9 @@ export default function Profile() {
     const users = collection(firestore, "users");
     const mutationOnUsers = useFirestoreCollectionMutation(users);
 
-    const getPosts = usePosts((state) => state.setPosts);
-
-    useEffect(() => {
-        getPosts();
-    }, [getPosts]);
-    const postss = usePosts((state) => state.posts);
     return (
         <>
-            <button
+            {/* <button
                 disabled={mutationOnPosts.isLoading}
                 onClick={() => {
                     mutationOnPosts.mutate({
@@ -52,7 +44,7 @@ export default function Profile() {
                 }}>
                 Add user
             </button> */}
-            <button
+            {/* <button
                 onClick={async () => {
                     await setDoc(
                         doc(firestore, "users", "Qki3tg4uXhdhcyr4n0Bn"),
@@ -82,8 +74,7 @@ export default function Profile() {
                     );
                 }}>
                 add user
-            </button>
-            <button onClick={() => console.log(postss)}>click</button>
+            </button>  */}
             {/* {mutation.isError && <p>{mutation.error.message}</p>} */}
         </>
     );
