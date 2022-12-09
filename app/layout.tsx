@@ -9,19 +9,15 @@ import { motion } from "framer-motion";
 //firebase
 
 import Login from "@/components/auth/Login";
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    const theme = useTheme((state: { theme: any; }) => state.theme);
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    const theme = useTheme((state: { theme: any }) => state.theme);
 
     return (
         <html lang='en'>
             <body>
                 <Container>
                     <ThemeProvider
-                        theme={theme !== "light" ? lightTheme : darkTheme}>
+                        theme={theme === "light" ? lightTheme : darkTheme}>
                         <AnimatePresence
                             // mode='wait'
                             initial={false}>

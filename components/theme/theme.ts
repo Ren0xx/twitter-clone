@@ -5,6 +5,6 @@ type Theme = {
 };
 
 export default create<Theme>(set => ({
-    theme: 'light',
+    theme: 'dark',
     setTheme: (theme) => set({ theme }),
   }));
