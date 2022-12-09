@@ -1,6 +1,7 @@
 import styles from "@/styles/Navbar.module.css";
 import { useTheme } from "@mui/material/styles";
 import { Button, Paper, Box } from "@mui/material";
+import ThemeSwitchButton from "./ThemeSwitchButton";
 //icons
 import HomeIcon from "@mui/icons-material/Home";
 import TagIcon from "@mui/icons-material/Tag";
@@ -10,6 +11,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MenuIcon from "@mui/icons-material/Menu";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import TwitterIcon from "@mui/icons-material/Twitter";
 
 import Link from "next/link";
 
@@ -18,11 +20,15 @@ const Navbar = () => {
     const { main, light } = theme.palette.primary;
     return (
         <div className={styles.menu}>
+            <div className={styles.icons__top}>
+                <TwitterIcon color='secondary' />
+                <ThemeSwitchButton />
+            </div>
             <Button
                 color='secondary'
                 startIcon={<HomeIcon />}
                 component={Link}
-                href='/home'>
+                href='/'>
                 Home
             </Button>
             <Button

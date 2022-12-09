@@ -1,21 +1,21 @@
 "use client";
 import "./globals.css";
 import { CssBaseline, ThemeProvider, Container } from "@mui/material";
-import Navbar from "../components/Navbar-.";
-import Menu from "../components/Navbar";
-import useTheme from "../components/theme/theme";
-import { darkTheme, lightTheme } from "../components/theme/themes";
+import useTheme from "@/components/theme/theme";
+import { darkTheme, lightTheme } from "@/components/theme/themes";
 import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-import { QueryClient, QueryClientProvider } from "react-query";
-const queryClient = new QueryClient();
+//firebase
 
+import Login from "@/components/auth/Login";
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const theme = useTheme((state) => state.theme);
+    const theme = useTheme((state: { theme: any; }) => state.theme);
+
     return (
         <html lang='en'>
             <body>
@@ -25,14 +25,18 @@ export default function RootLayout({
                         <AnimatePresence
                             // mode='wait'
                             initial={false}>
-                            <QueryClientProvider
-                                client={queryClient}
-                                contextSharing={true}>
-                                <Navbar />
-                                {children}
-                            </QueryClientProvider>
+                            <motion.div
+                                initial={{ x: 300, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                exit={{ x: 300, opacity: 0 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 260,
+                                    damping: 20,
+                                }}></motion.div>
+                            {children}
+                            <CssBaseline />
                         </AnimatePresence>
-                        <CssBaseline />
                     </ThemeProvider>
                 </Container>
             </body>
