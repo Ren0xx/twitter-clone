@@ -14,8 +14,6 @@ import {
     Stack,
     Typography,
     TextField,
-    Container,
-    Paper,
 } from "@mui/material";
 //icons
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -50,12 +48,12 @@ export default function Login() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            handleLogin(values.email, values.password)
         },
     });
 
-    const handleLogin = (login: string, password: string) => {
-        signInWithEmailAndPassword(auth, login, password)
+    const handleLogin = (email: string, password: string) => {
+        signInWithEmailAndPassword(auth, email, password)
             .then(() => {
                 router.push("/dashboard");
             })

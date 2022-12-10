@@ -9,7 +9,11 @@ import { motion } from "framer-motion";
 //firebase
 
 import Login from "@/components/auth/Login";
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const theme = useTheme((state: { theme: any }) => state.theme);
 
     return (
@@ -29,9 +33,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                     type: "spring",
                                     stiffness: 260,
                                     damping: 20,
-                                }}></motion.div>
-                            {children}
-                            <CssBaseline />
+                                }}>
+                                {children}
+                                <CssBaseline />
+                            </motion.div>
                         </AnimatePresence>
                     </ThemeProvider>
                 </Container>

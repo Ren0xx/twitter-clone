@@ -8,6 +8,10 @@ const nextConfig = {
     experimental: {
         appDir: true,
     },
+    images: {
+        domains: ["storage.googleapis.com", "coinpayments.net"],
+        minimumCacheTTL: 1500000,
+    },
     basePath: basePath,
 };
 

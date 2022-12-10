@@ -1,13 +1,17 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { app } from "../../firebaseConfig";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 import useTheme from "@/components/theme/theme";
 import { useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+import { app, storage } from "../../firebaseConfig";
+import { ref, uploadBytes } from "firebase/storage";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+import Resizer from "react-image-file-resizer";
 import {
     InputAdornment,
     Button,
@@ -48,7 +52,10 @@ const validationSchema = yup.object({
 
 export default function Register() {
     const auth = getAuth(app);
+    const storageRef = ref(storage, "/users/id_of_user/photo");
+
     const router = useRouter();
+
     const [profilePicture, setProfilePicture] = useState<any>();
     const hiddenFileInput = useRef<HTMLInputElement>(null);
 
@@ -57,6 +64,21 @@ export default function Register() {
     const inputStyle = {
         WebkitBoxShadow: `0 0 0 1000px ${inputBgColor} inset`,
     };
+    const resizeFile = (file: File) =>
+        new Promise((resolve) => {
+            Resizer.imageFileResizer(
+                file,
+                400,
+                400,
+                "JPEG",
+                100,
+                0,
+                (uri) => {
+                    resolve(uri);
+                },
+                "file"
+            );
+        });
 
     const formik = useFormik({
         initialValues: {
@@ -69,21 +91,32 @@ export default function Register() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2));
+            alert(profilePicture);
         },
     });
     const handleClick = () => {
         hiddenFileInput.current?.click();
     };
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            setProfilePicture(event.target.files[0]);
-            console.log(profilePicture);
+
+    const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files) return;
+        try {
+            const file = event.target.files[0];
+            const image = await resizeFile(file);
+            setProfilePicture(image);
+            // uploadBytes(storageRef, profilePicture).then((snapshot) => {
+            // });
+            console.log("Uploaded a blob or file!");
+            console.log(image);
+        } catch (error) {
+            console.error(error);
         }
     };
     const createUser = () => {};
+    const uploadFileButtonColor =
+        profilePicture !== undefined ? "secondary" : "error";
     return (
         <Stack
-            autoComplete='off'
             spacing={3}
             sx={{ width: "25rem" }}
             component='form'
@@ -93,13 +126,13 @@ export default function Register() {
             <Button
                 onClick={handleClick}
                 variant='outlined'
-                color='secondary'
+                color={uploadFileButtonColor}
                 component='label'>
                 Upload profile picture
                 <input
                     type='file'
                     ref={hiddenFileInput}
-                    onChange={handleChange}
+                    onChange={onChange}
                     hidden
                     accept='image/*'
                 />
@@ -122,8 +155,8 @@ export default function Register() {
                 inputProps={{ style: inputStyle }}
             />
             <TextField
-                id='name'
-                name='name'
+                id='username'
+                name='username'
                 label='Username'
                 value={formik.values.username}
                 onChange={formik.handleChange}
@@ -141,7 +174,6 @@ export default function Register() {
                 inputProps={{ style: inputStyle }}
             />
             <TextField
-                autoComplete='false'
                 fullWidth
                 id='email'
                 name='email'
@@ -160,7 +192,6 @@ export default function Register() {
                 inputProps={{ style: inputStyle }}
             />
             <TextField
-                autoComplete='false'
                 color='primary'
                 fullWidth
                 id='password'
@@ -183,7 +214,6 @@ export default function Register() {
                 inputProps={{ style: inputStyle }}
             />
             <TextField
-                autoComplete='false'
                 color='primary'
                 fullWidth
                 id='confirmPassword'
@@ -214,7 +244,8 @@ export default function Register() {
                 variant='contained'
                 color='secondary'
                 size='large'
-                sx={{ borderRadius: "15px" }}>
+                sx={{ borderRadius: "15px" }}
+                disabled={profilePicture === undefined}>
                 Login
             </Button>
             <p>Already have an account yet?</p>

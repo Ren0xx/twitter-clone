@@ -1,5 +1,6 @@
 "use client";
 import Grid from "@/components/Grid";
+import Feed from "@/components/Feed/Feed";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "../../firebaseConfig";
@@ -15,12 +16,15 @@ export default function Dashboard() {
             router.push("/login");
         }
         if (user) {
+            console.log(user);
             router.push("/dashboard");
         }
     }, [user, router]);
     return (
         <>
-            <Grid>5</Grid>
+            <Grid>
+                <Feed />
+            </Grid>
         </>
     );
 }
