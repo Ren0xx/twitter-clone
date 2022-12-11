@@ -1,9 +1,11 @@
+
 type User = {
-    uid: string;
+    uid?: string;
     at: string;
     name: string;
+    email : string;
     profilePicture: string;
-    joinedDate:  {seconds: string, nanoseconds: string} | string;
+    joinedDate: {nanoseconds: number, seconds: number};
     following: string[];
     followers: string[];
     tweets: string[];

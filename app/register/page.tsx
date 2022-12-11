@@ -9,8 +9,9 @@ import * as yup from "yup";
 
 import { app, storage } from "../../firebaseConfig";
 import { ref, uploadBytes } from "firebase/storage";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
+import { Timestamp } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, Auth } from "firebase/auth";
+import axios from "axios";
 import Resizer from "react-image-file-resizer";
 import {
     InputAdornment,
@@ -18,7 +19,8 @@ import {
     Stack,
     Typography,
     TextField,
-    Input,
+    Alert,
+    Snackbar,
 } from "@mui/material";
 //icons
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -27,12 +29,13 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
+import type User from "@/components/types/User";
 const validationSchema = yup.object({
     at: yup
         .string()
         .min(1, "Can't be empty")
         .required("This field is required"),
-    username: yup
+    name: yup
         .string()
         .min(1, "Can't be empty")
         .required("This field is required"),
@@ -49,21 +52,43 @@ const validationSchema = yup.object({
         .required("Please confirm your password")
         .oneOf([yup.ref("password")], "Passwords do not match"),
 });
-
 export default function Register() {
     const auth = getAuth(app);
-    const storageRef = ref(storage, "/users/id_of_user/photo");
-
     const router = useRouter();
+
+    const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
+    const handleClose = () => {
+        setIsErrorOpen(false);
+    };
+    const formik = useFormik({
+        initialValues: {
+            at: "",
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values, { resetForm }) => {
+            sendUserData(values, resetForm);
+        },
+    });
 
     const [profilePicture, setProfilePicture] = useState<any>();
     const hiddenFileInput = useRef<HTMLInputElement>(null);
-
+    const storageRef = ref(
+        storage,
+        `/users/${formik.values.name}/profilePicture`
+    );
     const theme = useTheme((state: { theme: any }) => state.theme);
     const inputBgColor = theme === "light" ? "#fff" : "#16181c";
     const inputStyle = {
         WebkitBoxShadow: `0 0 0 1000px ${inputBgColor} inset`,
     };
+    const uploadFileButtonColor =
+        profilePicture !== undefined ? "secondary" : "error";
+
+    //file operations
     const resizeFile = (file: File) =>
         new Promise((resolve) => {
             Resizer.imageFileResizer(
@@ -80,20 +105,6 @@ export default function Register() {
             );
         });
 
-    const formik = useFormik({
-        initialValues: {
-            at: "",
-            username: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
-            alert(profilePicture);
-        },
-    });
     const handleClick = () => {
         hiddenFileInput.current?.click();
     };
@@ -104,17 +115,55 @@ export default function Register() {
             const file = event.target.files[0];
             const image = await resizeFile(file);
             setProfilePicture(image);
-            // uploadBytes(storageRef, profilePicture).then((snapshot) => {
-            // });
-            console.log("Uploaded a blob or file!");
-            console.log(image);
         } catch (error) {
             console.error(error);
         }
     };
-    const createUser = () => {};
-    const uploadFileButtonColor =
-        profilePicture !== undefined ? "secondary" : "error";
+    //sending data
+    const sendUserData = async (values: any, reset: any) => {
+        const url = process.env.NEXT_PUBLIC_BASE_URL + "/api/users";
+        const { at, name, email } = values;
+        const userData: User = {
+            at: at,
+            name: name,
+            email: email,
+            profilePicture: `/users/${name}/profilePicture`,
+            joinedDate: Timestamp.now(),
+            following: [],
+            followers: [],
+            tweets: [],
+            replies: [],
+        };
+
+        try {
+            console.log(userData);
+            await axios.post(url, { ...userData });
+            await createUser(userData.email, values.password, reset);
+            uploadBytes(storageRef, profilePicture);
+            router.push('/dashboard');
+        } catch (error: any) {
+            console.log(error);
+            setIsErrorOpen(true);
+            reset();
+            setProfilePicture(undefined);
+        }
+    };
+    const createUser = async (email: string, password: string, reset: any) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+            console.log(userCredential.user);
+        } catch (error: any) {
+            console.log(error);
+            setIsErrorOpen(true);
+            reset();
+            setProfilePicture(undefined);
+        }
+    };
+
     return (
         <Stack
             spacing={3}
@@ -137,6 +186,7 @@ export default function Register() {
                     accept='image/*'
                 />
             </Button>
+            <button onClick={formik.handleReset}>Reset</button>
             <TextField
                 id='at'
                 name='at'
@@ -155,15 +205,13 @@ export default function Register() {
                 inputProps={{ style: inputStyle }}
             />
             <TextField
-                id='username'
-                name='username'
+                id='name'
+                name='name'
                 label='Username'
-                value={formik.values.username}
+                value={formik.values.name}
                 onChange={formik.handleChange}
-                error={
-                    formik.touched.username && Boolean(formik.errors.username)
-                }
-                helperText={formik.touched.username && formik.errors.username}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position='start'>
@@ -252,6 +300,11 @@ export default function Register() {
             <Link href='/register'>
                 <Typography>Sign in</Typography>
             </Link>
+            <Snackbar open={isErrorOpen} onClose={handleClose}>
+                <Alert severity='error' sx={{ width: "100%" }}>
+                    The email/@/username is already taken or incorrect.
+                </Alert>
+            </Snackbar>
         </Stack>
     );
 }

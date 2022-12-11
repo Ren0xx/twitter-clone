@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {id} : any = req.query;
   const storageBucket = storage.bucket(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_URL)
-  const fileName = `users/${id}/photo`
+  const fileName = `users/${id}/profilePicture`
   const remoteImagePath = storageBucket.file( fileName ).getSignedUrl({
       action: "read",
       expires: '03-17-2045' 

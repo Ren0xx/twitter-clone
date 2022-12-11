@@ -4,11 +4,23 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {id} : any = req.query;
   
-    const user = await db.collection('users').doc(id).get();
-
-  if (!user.exists) {
-    return res.status(404).json({});
-  }
-
-  return res.status(200).json({ id: user.id, ...user.data() });
+  try {
+    if (req.method === 'PUT') {
+      await db.collection('users').doc(id).update({
+        ...req.body
+      });
+    } else if (req.method === 'GET') {
+      const doc = await db.collection('users').doc(id).get();
+      if (!doc.exists) {
+        res.status(404).end();
+      } else {
+        res.status(200).json(doc.data());
+      }
+    } else if (req.method === 'DELETE') {
+      await db.collection('users').doc(id).delete();
+    }
+    res.status(200).end();
+  } catch (e) {
+    res.status(400).end();
 }
+} 

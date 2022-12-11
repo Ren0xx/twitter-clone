@@ -8,6 +8,8 @@ const Tweet = (props: Post) => {
     const { uid, numberOfReplies, replayTo, likes, owner, content, timeAdded } =
         props;
     // const photo =
+
+    //TODO get owner id, then use api/urls/{ownerid} to get link to profile picture
     return (
         <div className={styles.post}>
             <div>
