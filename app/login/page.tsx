@@ -4,7 +4,7 @@ import Link from "next/link";
 import { app } from "../../firebaseConfig";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import useTheme from "@/components/theme/theme";
-
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -14,6 +14,8 @@ import {
     Stack,
     Typography,
     TextField,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 //icons
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -40,6 +42,10 @@ export default function Login() {
     const inputStyle = {
         WebkitBoxShadow: `0 0 0 1000px ${inputBgColor} inset`,
     };
+    const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
+    const handleClose = () => {
+        setIsErrorOpen(false);
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -48,7 +54,7 @@ export default function Login() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            handleLogin(values.email, values.password)
+            handleLogin(values.email, values.password);
         },
     });
 
@@ -59,71 +65,82 @@ export default function Login() {
             })
             .catch(() => {
                 formik.values.password = "";
+                setIsErrorOpen(true);
             });
     };
     return (
-        <Stack
-            autoComplete='off'
-            spacing={5}
-            sx={{ width: "25rem" }}
-            component='form'
-            onSubmit={formik.handleSubmit}>
-            <TwitterIcon fontSize='large' />
-            <Typography variant='h4'>Login in on Twitter</Typography>
-            <TextField
-                autoComplete='false'
-                fullWidth
-                id='email'
-                name='email'
-                label='Email'
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position='start'>
-                            <MailOutlineIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                inputProps={{ style: inputStyle }}
-            />
-            <TextField
-                autoComplete='false'
-                color='primary'
-                fullWidth
-                id='password'
-                name='password'
-                label='Password'
-                type='password'
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position='start'>
-                            <KeyIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                inputProps={{ style: inputStyle }}
-            />
-            <Button
-                type='submit'
-                variant='contained'
-                color='secondary'
-                size='large'
-                sx={{ borderRadius: "15px" }}>
-                Login
-            </Button>
-            <p>Don&apos;t have an account yet?</p>
-            <Link href='/register'>
-                <Typography>Create an account</Typography>
-            </Link>
-        </Stack>
+        <>
+            <Stack
+                autoComplete='off'
+                spacing={5}
+                sx={{ width: "25rem" }}
+                component='form'
+                onSubmit={formik.handleSubmit}>
+                <TwitterIcon fontSize='large' />
+                <Typography variant='h4'>Login in on Twitter</Typography>
+                <TextField
+                    autoComplete='false'
+                    fullWidth
+                    id='email'
+                    name='email'
+                    label='Email'
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <MailOutlineIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{ style: inputStyle }}
+                />
+                <TextField
+                    autoComplete='false'
+                    color='primary'
+                    fullWidth
+                    id='password'
+                    name='password'
+                    label='Password'
+                    type='password'
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={
+                        formik.touched.password &&
+                        Boolean(formik.errors.password)
+                    }
+                    helperText={
+                        formik.touched.password && formik.errors.password
+                    }
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <KeyIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{ style: inputStyle }}
+                />
+                <Button
+                    type='submit'
+                    variant='contained'
+                    color='secondary'
+                    size='large'
+                    sx={{ borderRadius: "15px" }}>
+                    Login
+                </Button>
+                <p>Don&apos;t have an account yet?</p>
+                <Link href='/register'>
+                    <Typography>Create an account</Typography>
+                </Link>
+            </Stack>
+            <Snackbar open={isErrorOpen} onClose={handleClose}>
+                <Alert severity='error' sx={{ width: "100%" }}>
+                    Password is invalid. Please try again
+                </Alert>
+            </Snackbar>
+        </>
     );
 }

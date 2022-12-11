@@ -4,7 +4,7 @@ type User = {
     at: string;
     name: string;
     email : string;
-    profilePicture: string;
+    profilePicture?: string;
     joinedDate: {nanoseconds: number, seconds: number};
     following: string[];
     followers: string[];

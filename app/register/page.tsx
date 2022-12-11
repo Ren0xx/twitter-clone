@@ -75,10 +75,11 @@ export default function Register() {
     });
 
     const [profilePicture, setProfilePicture] = useState<any>();
+    const [storagePictureUrl, setStoragePictureUrl] = useState<string>("");
     const hiddenFileInput = useRef<HTMLInputElement>(null);
     const storageRef = ref(
         storage,
-        `/users/${formik.values.name}/profilePicture`
+        `/users/${storagePictureUrl}/profilePicture`
     );
     const theme = useTheme((state: { theme: any }) => state.theme);
     const inputBgColor = theme === "light" ? "#fff" : "#16181c";
@@ -127,36 +128,34 @@ export default function Register() {
             at: at,
             name: name,
             email: email,
-            profilePicture: `/users/${name}/profilePicture`,
             joinedDate: Timestamp.now(),
             following: [],
             followers: [],
             tweets: [],
             replies: [],
         };
-
-        try {
-            console.log(userData);
-            await axios.post(url, { ...userData });
-            await createUser(userData.email, values.password, reset);
-            uploadBytes(storageRef, profilePicture);
-            router.push('/dashboard');
-        } catch (error: any) {
-            console.log(error);
-            setIsErrorOpen(true);
-            reset();
-            setProfilePicture(undefined);
-        }
+        createUser(reset, userData, url, values);
     };
-    const createUser = async (email: string, password: string, reset: any) => {
+    const createUser = async (
+        reset: any,
+        userData: User,
+        url: string,
+        values: any
+    ) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
-                email,
-                password
+                values.email,
+                values.password
             );
-            console.log(userCredential.user);
-        } catch (error: any) {
+            const uid = userCredential.user.uid;
+            await axios.post(url, {
+                uid,
+                ...userData,
+            });
+            uploadBytes(ref(storage,`/users/${uid}/profilePicture`), profilePicture);
+            router.push("/dashboard");
+        } catch (error) {
             console.log(error);
             setIsErrorOpen(true);
             reset();
@@ -186,7 +185,6 @@ export default function Register() {
                     accept='image/*'
                 />
             </Button>
-            <button onClick={formik.handleReset}>Reset</button>
             <TextField
                 id='at'
                 name='at'
@@ -294,7 +292,7 @@ export default function Register() {
                 size='large'
                 sx={{ borderRadius: "15px" }}
                 disabled={profilePicture === undefined}>
-                Login
+                Sign up
             </Button>
             <p>Already have an account yet?</p>
             <Link href='/register'>
@@ -302,7 +300,7 @@ export default function Register() {
             </Link>
             <Snackbar open={isErrorOpen} onClose={handleClose}>
                 <Alert severity='error' sx={{ width: "100%" }}>
-                    The email/@/username is already taken or incorrect.
+                    Email is already taken.
                 </Alert>
             </Snackbar>
         </Stack>
