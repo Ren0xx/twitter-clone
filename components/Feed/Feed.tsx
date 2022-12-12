@@ -30,6 +30,7 @@ const Feed = () => {
                         likes={post.likes}
                         numberOfReplies={post.numberOfReplies}
                         timeAdded={post.timeAdded}
+                        uid={post.uid}
                     />
                 ))}
             </main>

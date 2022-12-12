@@ -21,10 +21,10 @@ export default function RootLayout({
         <html>
             <body>
                 <ThemeProvider theme={selectedTheme}>
-                    <Container>
-                        <AnimatePresence
-                            // mode='wait'
-                            initial={false}>
+                    <AnimatePresence
+                        // mode='wait'
+                        initial={false}>
+                        <Container>
                             <motion.div
                                 initial={{ x: 300, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
@@ -37,8 +37,8 @@ export default function RootLayout({
                                 {children}
                                 <CssBaseline />
                             </motion.div>
-                        </AnimatePresence>
-                    </Container>
+                        </Container>
+                    </AnimatePresence>
                 </ThemeProvider>
             </body>
         </html>
