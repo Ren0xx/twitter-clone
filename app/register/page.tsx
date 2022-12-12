@@ -10,7 +10,7 @@ import * as yup from "yup";
 import { app, storage } from "../../firebaseConfig";
 import { ref, uploadBytes } from "firebase/storage";
 import { Timestamp } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, Auth } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import axios from "axios";
 import Resizer from "react-image-file-resizer";
 import {
@@ -117,7 +117,7 @@ export default function Register() {
         }
     };
     //sending data
-    const sendUserData = async (values: any, reset: any) => {
+    const sendUserData = async (values: any, reset: () => void) => {
         const url = process.env.NEXT_PUBLIC_BASE_URL + "/api/users";
         const { at, name, email } = values;
         const userData: User = {
@@ -133,7 +133,7 @@ export default function Register() {
         createUser(reset, userData, url, values);
     };
     const createUser = async (
-        reset: any,
+        reset: () => void,
         userData: User,
         url: string,
         values: any

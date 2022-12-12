@@ -2,7 +2,7 @@ import { db } from '@/lib/firebaseAdmin.js';
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id }:any = req.query;
+  const  id  = req.query.id as string;
   try {
     if (req.method === 'PUT') {
       await db.collection('posts').doc(id).update({

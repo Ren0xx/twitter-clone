@@ -2,7 +2,7 @@ import { storage } from '@/lib/firebaseAdmin.js';
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const {id} : any = req.query;
+  const id = req.query.id as string;
   const storageBucket = storage.bucket(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_URL)
   const fileName = `users/${id}/profilePicture`
   const remoteImagePath = storageBucket.file( fileName ).getSignedUrl({

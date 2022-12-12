@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       if (req.method === 'POST'){
 
-        const {uid} = req.body;
+        const uid = req.body.uid as string;
         const user = await db.collection('users').doc(uid).set({
           ...req.body,
         });
