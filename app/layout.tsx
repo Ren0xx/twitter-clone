@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 
 //firebase
 
-import Login from "@/components/auth/Login";
 export default function RootLayout({
     children,
 }: {
@@ -17,11 +16,11 @@ export default function RootLayout({
     const theme = useTheme((state: { theme: any }) => state.theme);
 
     return (
-        <html lang='en'>
+        <html>
             <body>
-                <Container>
-                    <ThemeProvider
-                        theme={theme === "light" ? lightTheme : darkTheme}>
+                <ThemeProvider
+                    theme={theme === "light" ? lightTheme : darkTheme}>
+                    <Container>
                         <AnimatePresence
                             // mode='wait'
                             initial={false}>
@@ -38,8 +37,8 @@ export default function RootLayout({
                                 <CssBaseline />
                             </motion.div>
                         </AnimatePresence>
-                    </ThemeProvider>
-                </Container>
+                    </Container>
+                </ThemeProvider>
             </body>
         </html>
     );

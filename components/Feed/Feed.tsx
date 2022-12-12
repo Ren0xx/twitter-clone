@@ -7,7 +7,7 @@ import Loader from "../Loading";
 import Tweet from "./Tweet";
 import type Post from "@/components/types/Post";
 
-const fetcher = (url: any) => fetch(url).then((r) => r.json());
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 const Feed = () => {
     const { data } = useSWR(
@@ -24,12 +24,11 @@ const Feed = () => {
                 {data.map((post: Post) => (
                     <Tweet
                         key={post.uid}
-                        uid={post.uid}
+                        owner={post.owner}
+                        content={post.content}
                         replayTo={post.replayTo}
                         likes={post.likes}
                         numberOfReplies={post.numberOfReplies}
-                        owner={post.owner}
-                        content={post.content}
                         timeAdded={post.timeAdded}
                     />
                 ))}

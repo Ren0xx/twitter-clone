@@ -1,38 +1,96 @@
 import React from "react";
 import Image from "next/image";
 import type Post from "../types/Post";
-import styles from "../styles/Feed.module.css";
+import styles from "@/styles/Feed.module.css";
 import Link from "next/link";
 
+// import IconButton from '@material-ui/IconButton';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
+// import ShareIcon from '@material-ui/icons/Share';
+// import { makeStyles } from '@material-ui/styles';
+import KeyIcon from "@mui/icons-material/Key";
+
+import { Suspense } from "react";
+import useSWR from "swr";
+
+import {
+    Card,
+    CardContent,
+    CardMedia,
+    Typography,
+    Button,
+    CardActionArea,
+    CardActions,
+    Avatar,
+    Paper,
+} from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import RepeatIcon from "@mui/icons-material/Repeat";
 const Tweet = (props: Post) => {
+    const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
     const { uid, numberOfReplies, replayTo, likes, owner, content, timeAdded } =
         props;
     // const photo =
-
+    const { data } = useSWR(
+        process.env.NEXT_PUBLIC_BASE_URL + "/api/posts",
+        fetcher,
+        {
+            suspense: true,
+        }
+    );
+    const handleClick = () => {
+        console.log("hi");
+    };
+    const likePost = () => {};
+    //TODO useState to make state for: liked
     //TODO get owner id, then use api/urls/{ownerid} to get link to profile picture
     return (
-        <div className={styles.post}>
-            <div>
-                <Link
-                    // as={`/users/janek`}
-                    href={{
-                        pathname: `/users/${uid}`,
-                        // query: {
-                        //     id: id,
-                        // },
-                    }}>
-                    {uid}
-                </Link>
-                <Image
-                    src='https://storage.googleapis.com/fake-twitter0.appspot.com/users/id_of_user/photo?GoogleAccessId=firebase-adminsdk-zh9fy%40fake-twitter0.iam.gserviceaccount.com&Expires=1742166000&Signature=FhTJI7S1WIBDt8XxOlvB39natw0QbmNqb1cUrV2TipJLCz4w4IDnF9A8CTR4sQhZeCP9L77gvIy%2Bf9RYnarpf07sZVkho9FiR%2Fx%2FILbyEulebYGA6qdbBCS5LbUChty%2Bsow%2FFBBRts8apza5g%2BBfd8%2BG8Jg5pjT%2BeH1jg7pMm2NymjTXy5USAVYePDyX%2BPiev%2FUUleG%2BkrzFySCwnwb7sxsaQog0mM%2BFjUESImrsWAngk8yRkc47JHCecGwAi0WsY%2F81jQXMPQEROs31fNCVnTLslDKy5OfVFhzxiFUFD%2B6eUiEhT168zKhcWfmNimlfZZtP6dDfHYdpanaAXSiI6A%3D%3D'
-                    alt='...'
-                    width={100}
-                    height={100}
-                />
-                <p>{content}</p>
-                <p>{replayTo !== "" ? `Replay to  ${replayTo}` : ""}</p>
-            </div>
-        </div>
+        <Card>
+            <CardActionArea
+                className={styles.card}
+                disableRipple
+                onClick={handleClick}>
+                <div className={styles.card__photo}>
+                    <Avatar src='https://storage.googleapis.com/fake-twitter0.appspot.com/users/jYjdNdGI1ETP0dYqBsI5QOLKBXn2/profilePicture?GoogleAccessId=firebase-adminsdk-zh9fy%40fake-twitter0.iam.gserviceaccount.com&Expires=2373318000&Signature=nN6V32jciYLXzUn8W%2BQKMKLJPIK8BJDu58Rit%2B1eJoqoUrx%2BuXWHxam0DbEJmdnRQTclCW5pbMBpbTVN2gK7yJOGxPzJkf6DTENVgJ2rTsNpdzV01h52LTuwIpdUV3uyvKz5hZf5PGSMeP0UvbKj2O1XMWaogzR4HfNL%2B5tSK9t9TFApV0bnThGNhvULwHIrHJ6SEog3cJ7gufiTv%2Fmi0YVUektdmGb%2BAqbFw2TPli0zVwlemtEnz0Djl6z174cbvsdzQOraLrkEK0iAlXUHXkSmESyc1ePG0nVGbyd0FfAkDmia8876MgkdfG%2BTa3xunE2ENGi5DNNt35g%2FVvZrNQ%3D%3D' />
+                </div>
+                <CardContent className={styles.card__main}>
+                    <div className={styles.card__main__header}>
+                        <Typography variant='subtitle1' color='primary'>
+                            User Name
+                        </Typography>
+                        <Typography
+                            component={Link}
+                            href='/dashboard/users/Id'
+                            sx={{ zIndex: 10000 }}
+                            variant='body2'
+                            color='textSecondary'>
+                            @user_handle
+                        </Typography>
+                        <Typography variant='subtitle1' color='textSecondary'>
+                            24 december
+                        </Typography>
+                    </div>
+                    <Typography variant='body1'>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                    </Typography>
+                </CardContent>
+                <CardActions className={styles.card__bottom}>
+                    <RepeatIcon aria-label='share' />
+                    <Typography>
+                        <ChatBubbleOutlineIcon aria-label='retweet' />
+                        {numberOfReplies}
+                    </Typography>
+                    <Typography>
+                        <FavoriteBorderIcon aria-label='favorite'></FavoriteBorderIcon>
+                        {likes}
+                    </Typography>
+                </CardActions>
+            </CardActionArea>
+        </Card>
     );
 };
 

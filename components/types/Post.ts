@@ -1,5 +1,5 @@
 type Post = {
-    uid: string;
+    uid?: string;
     owner: string;
     timeAdded: {seconds: string, nanoseconds: string} | string;
     content: string;

@@ -12,9 +12,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(200).json({ user });
       }
       else {
-        const users = await db.collection('users').get();
-        const usersData = users.docs.map(user => user.data());
-        res.status(200).json(usersData);
+        // const users = await db.collection('users').get();
+        // const usersData = users.docs.map(user => user.data());
+        // res.status(200).json(usersData);
+        res.status(400).end()
       }
         } catch (e) {
           res.status(400).end();

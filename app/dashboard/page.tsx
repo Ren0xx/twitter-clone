@@ -12,13 +12,13 @@ export default function Dashboard() {
     const [user] = useAuthState(auth);
 
     useEffect(() => {
-        if (!user) {
-            router.push("/login");
-        }
-        if (user) {
-            console.log(user);
-            router.push("/dashboard");
-        }
+        // if (!user) {
+        //     router.push("/login");
+        // }
+        // if (user) {
+        //     console.log(user);
+        //     router.push("/dashboard");
+        // }
     }, [user, router]);
     return (
         <>

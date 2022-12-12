@@ -75,12 +75,8 @@ export default function Register() {
     });
 
     const [profilePicture, setProfilePicture] = useState<any>();
-    const [storagePictureUrl, setStoragePictureUrl] = useState<string>("");
     const hiddenFileInput = useRef<HTMLInputElement>(null);
-    const storageRef = ref(
-        storage,
-        `/users/${storagePictureUrl}/profilePicture`
-    );
+    
     const theme = useTheme((state: { theme: any }) => state.theme);
     const inputBgColor = theme === "light" ? "#fff" : "#16181c";
     const inputStyle = {
