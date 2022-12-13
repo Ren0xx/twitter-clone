@@ -19,22 +19,19 @@ const Feed = () => {
     );
 
     return (
-        <Suspense fallback={<Loader />}>
             <main className={styles.mainFeed}>
                 {data.map((post: Post) => (
                     <Tweet
                         key={post.uid}
+                        uid={post.uid}
                         owner={post.owner}
                         content={post.content}
-                        replayTo={post.replayTo}
                         likes={post.likes}
                         numberOfReplies={post.numberOfReplies}
                         timeAdded={post.timeAdded}
-                        uid={post.uid}
                     />
                 ))}
             </main>
-        </Suspense>
     );
 };
 export default Feed;

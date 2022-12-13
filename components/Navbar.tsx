@@ -17,7 +17,6 @@ import Link from "next/link";
 
 const Navbar = () => {
     const theme = useTheme();
-    const { main, light } = theme.palette.primary;
     return (
         <div className={styles.menu}>
             <div className={styles.icons__top}>

@@ -76,9 +76,9 @@ export default function Register() {
 
     const [profilePicture, setProfilePicture] = useState<any>();
     const hiddenFileInput = useRef<HTMLInputElement>(null);
-    
+
     const theme = useTheme((state: { theme: any }) => state.theme);
-    const inputBgColor = theme === "light" ? "#fff" : "#16181c";
+    const inputBgColor = theme === "light" ? "#fff" : "#000000";
     const inputStyle = {
         WebkitBoxShadow: `0 0 0 1000px ${inputBgColor} inset`,
     };
@@ -149,7 +149,10 @@ export default function Register() {
                 uid,
                 ...userData,
             });
-            uploadBytes(ref(storage,`/users/${uid}/profilePicture`), profilePicture);
+            uploadBytes(
+                ref(storage, `/users/${uid}/profilePicture`),
+                profilePicture
+            );
             router.push("/dashboard");
         } catch (error) {
             console.log(error);

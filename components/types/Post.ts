@@ -1,9 +1,8 @@
 type Post = {
     uid?: string;
     owner: string;
-    timeAdded: {seconds: string, nanoseconds: string} | string;
+    timeAdded: {seconds: number, nanoseconds: number};
     content: string;
-    replayTo?: string;
     likes: number;
     numberOfReplies: number;
 

@@ -2,6 +2,7 @@ import { db } from '@/lib/firebaseAdmin.js';
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.setHeader('Content-Type', 'text/plain');
   const id  = req.query.id as string;
   try {
     if (req.method === 'PUT') {
@@ -13,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (!doc.exists) {
         res.status(404).end();
       } else {
-        res.status(200).json(doc.data());
+        res.status(204).json(doc.data());
       }
     } else if (req.method === 'DELETE') {
       await db.collection('posts').doc(id).delete();
