@@ -12,13 +12,10 @@ import styles from "@/styles/Feed.module.css";
 import {
     Card,
     CardContent,
-    CardMedia,
     Typography,
-    Button,
     CardActionArea,
     CardActions,
     Avatar,
-    Paper,
 } from "@mui/material";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -34,7 +31,7 @@ const Tweet = (props: Post) => {
 
     const [isLiked, setIsLiked] = useState<boolean>(false);
     const [localLikes, setLocalLikes] = useState<number>(likes);
-    const day = useMemo(() => {
+    const dayWhenPosted = useMemo(() => {
         return getDayFromTime(timeAdded.nanoseconds, timeAdded.seconds);
     }, [timeAdded.nanoseconds, timeAdded.seconds]);
     const { data: ownerData } = useSWR(
@@ -84,7 +81,7 @@ const Tweet = (props: Post) => {
     return (
         <Card className={styles.card}>
             <div className={styles.card__photo}>
-                <Avatar src={photoUrl} />
+                <Avatar src={photoUrl} alt='...' />
             </div>
             <div className={styles.card__main}>
                 <CardContent sx={{ paddingLeft: "0px" }}>
@@ -104,7 +101,7 @@ const Tweet = (props: Post) => {
                             @{ownerData.at}
                         </Typography>
                         <Typography variant='subtitle1' color='textSecondary'>
-                            {day}
+                            {dayWhenPosted}
                         </Typography>
                     </div>
                 </CardContent>
