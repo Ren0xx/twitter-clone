@@ -79,7 +79,7 @@ const Tweet = (props: Post) => {
             });
     };
     return (
-        <Card className={styles.card}>
+        <Card className={styles.card} variant='outlined'>
             <div className={styles.card__photo}>
                 <Avatar src={photoUrl} alt='...' />
             </div>

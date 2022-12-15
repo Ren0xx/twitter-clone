@@ -27,7 +27,7 @@ const Navbar = () => {
                 color='secondary'
                 startIcon={<HomeIcon />}
                 component={Link}
-                href='/'>
+                href='/dashboard'>
                 Home
             </Button>
             <Button
@@ -69,7 +69,7 @@ const Navbar = () => {
                 color='secondary'
                 startIcon={<PermIdentityIcon />}
                 component={Link}
-                href='/profile'>
+                href='/dashboard/profile'>
                 Profile
             </Button>
             <Button

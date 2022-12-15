@@ -5,11 +5,7 @@ import Navbar from "@/components/Navbar";
 
 const Grid = ({ children }: { children: React.ReactNode }) => {
     return (
-        <LayoutGrid
-            container
-            sx={{ mt: "0.8rem" }}
-            justifyContent='center'
-            alignItems='flex-start'>
+        <LayoutGrid container justifyContent='center' alignItems='flex-start'>
             <LayoutGrid sx={{ position: "sticky", top: "0.8rem" }} item xs={3}>
                 <Navbar />
             </LayoutGrid>

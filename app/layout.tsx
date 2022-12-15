@@ -21,11 +21,11 @@ export default function RootLayout({
         <html>
             <body>
                 <ThemeProvider theme={selectedTheme}>
-                    <AnimatePresence
+                    {/* <AnimatePresence
                         // mode='wait'
-                        initial={false}>
-                        <Container>
-                            <motion.div
+                        initial={false}> */}
+                    <Container>
+                        {/* <motion.div
                                 initial={{ x: 300, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 exit={{ x: 300, opacity: 0 }}
@@ -33,13 +33,13 @@ export default function RootLayout({
                                     type: "spring",
                                     stiffness: 260,
                                     damping: 20,
-                                }}>
-                                {children}
-                                <CssBaseline />
-                            </motion.div>
-                        </Container>
-                    </AnimatePresence>
+                                }}> */}
+                        {children}
+                        <CssBaseline />
+                        {/* </motion.div> */}
+                    </Container>
                 </ThemeProvider>
+                {/* </AnimatePresence> */}
             </body>
         </html>
     );

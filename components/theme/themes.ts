@@ -15,12 +15,14 @@ export const darkTheme = createTheme({
         info: {
           main: '#000000',
         },
+        
       },
       typography: {
         button: {
           textTransform: 'none'
         },
       },
+      
 })
 export const lightTheme = createTheme({
     palette: {

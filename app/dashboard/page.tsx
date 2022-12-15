@@ -20,11 +20,5 @@ export default function Dashboard() {
         //     router.push("/dashboard");
         // }
     }, [user, router]);
-    return (
-        <>
-            <Grid>
-                <Feed />
-            </Grid>
-        </>
-    );
+    return <Feed />;
 }

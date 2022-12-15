@@ -1,15 +1,16 @@
 .mainFeed {
     border: 1px solid #2f3336;
-
+    margin-top: 0.4rem;
 }
 
-
+.searchBar {
+    padding: 1.9em
+}
 
 .post img {
     border-radius: 50%;
     padding: 0.1em;
     padding-bottom: 0.5em;
-
 }
 
 .card {
