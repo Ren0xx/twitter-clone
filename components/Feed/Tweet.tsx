@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import type Post from "../types/Post";
 
 import Image from "next/image";
@@ -23,8 +23,20 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import RepeatIcon from "@mui/icons-material/Repeat";
 
 import getDayFromTime from "@/utils/dates/getDayFromTime";
+const areEqual = (prevProps: Post, nextProps: Post) => {
+    // Compare the props here and return true if they are the same, and false otherwise
+    return (
+        prevProps.uid === nextProps.uid &&
+        prevProps.numberOfReplies === nextProps.numberOfReplies &&
+        prevProps.likes === nextProps.likes &&
+        prevProps.owner === nextProps.owner &&
+        prevProps.content === nextProps.content &&
+        prevProps.timeAdded.nanoseconds === nextProps.timeAdded.nanoseconds &&
+        prevProps.timeAdded.seconds === nextProps.timeAdded.seconds
+    );
+};
 
-const Tweet = (props: Post) => {
+const Tweet = React.memo((props: Post) => {
     const fetcher = (url: string) => fetch(url).then((r) => r.json());
     const { uid, numberOfReplies, likes, owner, content, timeAdded } = props;
     const router = useRouter();
@@ -133,6 +145,6 @@ const Tweet = (props: Post) => {
             </CardActions>
         </Card>
     );
-};
-
+}, areEqual);
+Tweet.displayName = "Tweet";
 export default Tweet;

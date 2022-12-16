@@ -1,11 +1,18 @@
 import useSWRInfinite from "swr/infinite";
 
-// import lunr from 'lunr';
 import styles from "../styles/Feed.module.css";
-import Tweet from "./Tweet";
 import type Post from "@/components/types/Post";
 import { CircularProgress, Paper, TextField } from "@mui/material";
-import { useState, useEffect, ChangeEvent } from "react";
+import {
+    useState,
+    useEffect,
+    useMemo,
+    useCallback,
+    useRef,
+    ChangeEvent,
+} from "react";
+import React, { lazy, Suspense } from "react";
+const Tweet = lazy(() => import("./Tweet"));
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 const Feed = () => {
@@ -21,8 +28,6 @@ const Feed = () => {
         }
     );
 
-
-    
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,32 +36,36 @@ const Feed = () => {
     const filterTweetsByText = (tweets: Post[], term: string) => {
         return tweets.filter((tweet) => tweet.content.includes(term));
     };
-    const filteredTweets = filterTweetsByText(
-        data?.flat() as any[],
-        searchTerm
-    );
+    const filteredTweets = useMemo(() => {
+        return filterTweetsByText(data?.flat() as any[], searchTerm);
+    }, [data, searchTerm]);
+
+    const gridRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const grid = document.getElementById("grid");
-        if (grid) {
-            grid.style.height = `${grid.scrollHeight}px`;
+        if (gridRef.current) {
+            gridRef.current.style.height = `${gridRef.current.scrollHeight}px`;
         }
     }, [filteredTweets]);
 
+    const handleScroll = useCallback(() => {
+        if (
+            window.innerHeight + document.documentElement.scrollTop ===
+            document.documentElement.offsetHeight
+        ) {
+            setSize(size + 1);
+        }
+    }, [size, setSize]);
+
     useEffect(() => {
-        const handleScroll = () => {
-            if (
-                window.innerHeight + document.documentElement.scrollTop ===
-                document.documentElement.offsetHeight
-            ) {
-                setSize(size + 1);
-            }
-        };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [size, setSize]);
+    }, [handleScroll]);
     return (
-        <main className={styles.mainFeed} id='grid'>
+        <main
+            className={styles.mainFeed}
+            ref={gridRef}
+            style={{ height: filteredTweets.length > 0 ? "100%" : "100vh" }}>
             <TextField
                 label='Search tweets'
                 onChange={handleSearchChange}
@@ -64,7 +73,6 @@ const Feed = () => {
                 fullWidth
                 className={styles.searchBar}
             />
-
             {filteredTweets.map((post: Post) => (
                 <Tweet
                     key={post.uid}
@@ -76,15 +84,19 @@ const Feed = () => {
                     timeAdded={post.timeAdded}
                 />
             ))}
-            {isValidating && (
-                <Paper
-                    variant='outlined'
-                    sx={{ display: "flex", justifyContent: "center" }}>
-                    <CircularProgress color='primary' />
-                </Paper>
-            )}
+            {isValidating && <Loading />}
         </main>
     );
 };
 
 export default Feed;
+
+const Loading = () => {
+    return (
+        <Paper
+            variant='outlined'
+            sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress color='primary' />
+        </Paper>
+    );
+};
