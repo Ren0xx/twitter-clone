@@ -13,8 +13,9 @@ import {
 } from "react";
 import React, { lazy, Suspense } from "react";
 const Tweet = lazy(() => import("./Tweet"));
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import useDebounce from "@/utils/useDebounce";
 
+import fetcher from "@/utils/fetcher";
 const Feed = () => {
     const { data, size, setSize, isValidating } = useSWRInfinite(
         (index, previousPageData) =>
@@ -29,6 +30,7 @@ const Feed = () => {
     );
 
     const [searchTerm, setSearchTerm] = useState("");
+    const debouncedSearchTerm = useDebounce(searchTerm, 500); //500ms delay
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -37,8 +39,8 @@ const Feed = () => {
         return tweets.filter((tweet) => tweet.content.includes(term));
     };
     const filteredTweets = useMemo(() => {
-        return filterTweetsByText(data?.flat() as any[], searchTerm);
-    }, [data, searchTerm]);
+        return filterTweetsByText(data?.flat() as any[], debouncedSearchTerm);
+    }, [data, debouncedSearchTerm]);
 
     const gridRef = useRef<HTMLDivElement | null>(null);
 

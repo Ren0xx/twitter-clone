@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import useSWR from "swr";
+import fetcher from "@/utils/fetcher";
 
 import styles from "@/styles/Feed.module.css";
 import {
@@ -21,28 +22,28 @@ import {
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import RepeatIcon from "@mui/icons-material/Repeat";
-
+import useLikeDislike from "@/utils/useLikeDislike";
 import getDayFromTime from "@/utils/dates/getDayFromTime";
 const areEqual = (prevProps: Post, nextProps: Post) => {
-    // Compare the props here and return true if they are the same, and false otherwise
+    const { uid, numberOfReplies, likes, owner, content, timeAdded } =
+        prevProps;
     return (
-        prevProps.uid === nextProps.uid &&
-        prevProps.numberOfReplies === nextProps.numberOfReplies &&
-        prevProps.likes === nextProps.likes &&
-        prevProps.owner === nextProps.owner &&
-        prevProps.content === nextProps.content &&
-        prevProps.timeAdded.nanoseconds === nextProps.timeAdded.nanoseconds &&
-        prevProps.timeAdded.seconds === nextProps.timeAdded.seconds
+        uid === nextProps.uid &&
+        numberOfReplies === nextProps.numberOfReplies &&
+        likes === nextProps.likes &&
+        owner === nextProps.owner &&
+        content === nextProps.content &&
+        timeAdded.nanoseconds === nextProps.timeAdded.nanoseconds &&
+        timeAdded.seconds === nextProps.timeAdded.seconds
     );
 };
-
 const Tweet = React.memo((props: Post) => {
-    const fetcher = (url: string) => fetch(url).then((r) => r.json());
     const { uid, numberOfReplies, likes, owner, content, timeAdded } = props;
     const router = useRouter();
 
-    const [isLiked, setIsLiked] = useState<boolean>(false);
-    const [localLikes, setLocalLikes] = useState<number>(likes);
+    // const [isLiked, setIsLiked] = useState<boolean>(false);
+    // const [localLikes, setLocalLikes] = useState<number>(likes);
+
     const dayWhenPosted = useMemo(() => {
         return getDayFromTime(timeAdded.nanoseconds, timeAdded.seconds);
     }, [timeAdded.nanoseconds, timeAdded.seconds]);
@@ -63,33 +64,7 @@ const Tweet = React.memo((props: Post) => {
     const redirectToPost = () => {
         router.push(`/dashboard/posts/${uid}`);
     };
-    const likeOrDislike = async () => {
-        if (isLiked) {
-            await axios
-                .put(process.env.NEXT_PUBLIC_BASE_URL + `/api/posts/${uid}`, {
-                    likes: likes - 1,
-                })
-                .then(() => {
-                    setLocalLikes(localLikes - 1);
-                    setIsLiked(false);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            return;
-        }
-        await axios
-            .put(process.env.NEXT_PUBLIC_BASE_URL + `/api/posts/${uid}`, {
-                likes: likes + 1,
-            })
-            .then(() => {
-                setLocalLikes(localLikes + 1);
-                setIsLiked(true);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    const { isLiked, localLikes, likeOrDislike } = useLikeDislike(likes, uid);
     return (
         <Card className={styles.card} variant='outlined'>
             <div className={styles.card__photo}>
