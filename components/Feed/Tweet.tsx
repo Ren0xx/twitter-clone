@@ -5,7 +5,6 @@ import type Post from "../types/Post";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 
@@ -24,6 +23,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import useLikeDislike from "@/utils/useLikeDislike";
 import getDayFromTime from "@/utils/dates/getDayFromTime";
+
 const areEqual = (prevProps: Post, nextProps: Post) => {
     const { uid, numberOfReplies, likes, owner, content, timeAdded } =
         prevProps;
@@ -40,9 +40,6 @@ const areEqual = (prevProps: Post, nextProps: Post) => {
 const Tweet = React.memo((props: Post) => {
     const { uid, numberOfReplies, likes, owner, content, timeAdded } = props;
     const router = useRouter();
-
-    // const [isLiked, setIsLiked] = useState<boolean>(false);
-    // const [localLikes, setLocalLikes] = useState<number>(likes);
 
     const dayWhenPosted = useMemo(() => {
         return getDayFromTime(timeAdded.nanoseconds, timeAdded.seconds);
@@ -93,7 +90,21 @@ const Tweet = React.memo((props: Post) => {
                     </div>
                 </CardContent>
                 <CardActionArea disableRipple onClick={redirectToPost}>
-                    <Typography variant='body1'>{content}</Typography>
+                    <Typography
+                        className={styles.card__post_content}
+                        // component='p'
+                        variant='body1'
+                        sx={{
+                            // maxLength: "100px",
+                            // overflow: "hidden",
+                            // textOverflow: "ellipsis",
+                            wordWrap: "break-word",
+                            wordBreak: "break-all",
+                        }}>
+                        {content.length < 150
+                            ? content
+                            : content.substr(0, 150) + "..."}
+                    </Typography>
                 </CardActionArea>
             </div>
             <CardActions className={styles.card__bottom}>

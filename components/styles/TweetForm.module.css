@@ -1,0 +1,32 @@
+.modal {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 8em;
+
+}
+.form {
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+    align-items: center;
+    max-width: 35rem;
+    padding: 1em;
+    gap: 0.2em;
+    row-gap: 0.6em;
+    border-radius: 1em;
+}
+
+
+.form__bottom {
+    grid-column: 2 /3;
+    grid-row: 2/3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2em;
+}
+
+.form__bottom>button {
+    border-radius: 2em;
+    width: 8em;
+}

@@ -1,7 +1,9 @@
 import styles from "@/styles/Navbar.module.css";
 import { useTheme } from "@mui/material/styles";
-import { Button, Paper, Box } from "@mui/material";
+import { Button } from "@mui/material";
+import { useState } from "react";
 import ThemeSwitchButton from "./ThemeSwitchButton";
+import Tweet from "./Feed/TweetForm";
 //icons
 import HomeIcon from "@mui/icons-material/Home";
 import TagIcon from "@mui/icons-material/Tag";
@@ -14,8 +16,12 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
 import Link from "next/link";
+import TweetForm from "./Feed/TweetForm";
 
 const Navbar = () => {
+    const [open, setOpen] = useState<boolean>(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const theme = useTheme();
     return (
         <div className={styles.menu}>
@@ -81,6 +87,7 @@ const Navbar = () => {
             </Button>
             <Button
                 variant='contained'
+                onClick={handleOpen}
                 className={styles.post__button}
                 sx={{
                     borderRadius: "2em",
@@ -89,6 +96,10 @@ const Navbar = () => {
                 color='primary'>
                 Tweet
             </Button>
+            <TweetForm
+                open={open}
+                handleClose={handleClose}
+            />
         </div>
     );
 };

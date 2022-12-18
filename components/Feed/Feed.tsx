@@ -14,8 +14,8 @@ import {
 import React, { lazy, Suspense } from "react";
 const Tweet = lazy(() => import("./Tweet"));
 import useDebounce from "@/utils/useDebounce";
-
 import fetcher from "@/utils/fetcher";
+
 const Feed = () => {
     const { data, size, setSize, isValidating } = useSWRInfinite(
         (index, previousPageData) =>
@@ -31,7 +31,6 @@ const Feed = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
     const debouncedSearchTerm = useDebounce(searchTerm, 500); //500ms delay
-
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };

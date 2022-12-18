@@ -15,11 +15,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (!isNaN(page) && !isNaN(limit)) {
                 const snapshot = await db
                     .collection('posts')
-                    .orderBy('timeAdded', 'desc')
+                    .orderBy('timeAdded.seconds', 'desc')
                     .limit(limit)
                     .offset((page - 1) * limit)
                     .get();
-                const posts = snapshot.docs.map((doc) => doc.data());
+                    const posts = snapshot.docs.map((doc) => ({
+                        ...doc.data(),
+                        uid: doc.id
+                      }));
                 return res.status(200).json(posts);
             } else {
                 res.status(400).end();

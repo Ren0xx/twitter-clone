@@ -9,10 +9,15 @@ const nextConfig = {
         appDir: true,
     },
     images: {
-        domains: ["storage.googleapis.com", "coinpayments.net"],
+        domains: [
+            "storage.googleapis.com",
+            "coinpayments.net",
+            "firebasestorage.googleapis.com",
+        ],
         minimumCacheTTL: 1500000,
     },
     basePath: basePath,
+    
 };
 
 module.exports = nextConfig;
