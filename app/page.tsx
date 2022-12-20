@@ -19,5 +19,5 @@ export default function Home() {
     //     }
     // }, [user, router]);
 
-    return;
+    return ;
 }

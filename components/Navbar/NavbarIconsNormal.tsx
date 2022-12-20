@@ -1,9 +1,5 @@
-import styles from "@/styles/Navbar.module.css";
-import { useTheme } from "@mui/material/styles";
+"use client";
 import { Button } from "@mui/material";
-import { useState } from "react";
-import ThemeSwitchButton from "./ThemeSwitchButton";
-import Tweet from "./Feed/TweetForm";
 //icons
 import HomeIcon from "@mui/icons-material/Home";
 import TagIcon from "@mui/icons-material/Tag";
@@ -13,22 +9,12 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MenuIcon from "@mui/icons-material/Menu";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import TwitterIcon from "@mui/icons-material/Twitter";
 
 import Link from "next/link";
-import TweetForm from "./Feed/TweetForm";
 
-const Navbar = () => {
-    const [open, setOpen] = useState<boolean>(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const theme = useTheme();
+const NavbarIconsNormal = () => {
     return (
-        <div className={styles.menu}>
-            <div className={styles.icons__top}>
-                <TwitterIcon color='secondary' />
-                <ThemeSwitchButton />
-            </div>
+        <>
             <Button
                 color='secondary'
                 startIcon={<HomeIcon />}
@@ -36,6 +22,7 @@ const Navbar = () => {
                 href='/dashboard'>
                 Home
             </Button>
+
             <Button
                 color='secondary'
                 startIcon={<TagIcon />}
@@ -85,22 +72,7 @@ const Navbar = () => {
                 href='/more'>
                 More
             </Button>
-            <Button
-                variant='contained'
-                onClick={handleOpen}
-                className={styles.post__button}
-                sx={{
-                    borderRadius: "2em",
-                    mr: "0.8em",
-                }}
-                color='primary'>
-                Tweet
-            </Button>
-            <TweetForm
-                open={open}
-                handleClose={handleClose}
-            />
-        </div>
+        </>
     );
 };
-export default Navbar;
+export default NavbarIconsNormal;

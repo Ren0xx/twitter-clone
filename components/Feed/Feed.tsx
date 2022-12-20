@@ -74,17 +74,19 @@ const Feed = () => {
                 fullWidth
                 className={styles.searchBar}
             />
-            {filteredTweets.map((post: Post) => (
-                <Tweet
-                    key={post.uid}
-                    uid={post.uid}
-                    owner={post.owner}
-                    content={post.content}
-                    likes={post.likes}
-                    numberOfReplies={post.numberOfReplies}
-                    timeAdded={post.timeAdded}
-                />
-            ))}
+            {/* <Suspense fallback={<Loading />}>
+                {filteredTweets.map((post: Post) => (
+                    <Tweet
+                        key={post.uid}
+                        uid={post.uid}
+                        owner={post.owner}
+                        content={post.content}
+                        likes={post.likes}
+                        numberOfReplies={post.numberOfReplies}
+                        timeAdded={post.timeAdded}
+                    />
+                ))}
+            </Suspense> */}
             {isValidating && <Loading />}
         </main>
     );

@@ -23,7 +23,7 @@ export default function RootLayout({
                 <ThemeProvider theme={selectedTheme}>
                     {/* <AnimatePresence
                         // mode='wait'
-                        initial={false}> */}
+                    initial={false}> */}
                     <Container>
                         {/* <motion.div
                                 initial={{ x: 300, opacity: 0 }}
@@ -35,11 +35,11 @@ export default function RootLayout({
                                     damping: 20,
                                 }}> */}
                         {children}
-                        <CssBaseline />
                         {/* </motion.div> */}
                     </Container>
+                    <CssBaseline />
+                    {/* </AnimatePresence> */}
                 </ThemeProvider>
-                {/* </AnimatePresence> */}
             </body>
         </html>
     );

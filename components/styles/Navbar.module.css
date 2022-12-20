@@ -1,6 +1,6 @@
 .menu {
     display: flex;
-    flex-flow: column nowrap;
+    flex-direction: column;
     row-gap: 0.55em;
     justify-content: flex-start;
 }

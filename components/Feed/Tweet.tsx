@@ -1,8 +1,7 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, {useMemo } from "react";
 import type Post from "../types/Post";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
@@ -74,7 +73,7 @@ const Tweet = React.memo((props: Post) => {
                             component={Link}
                             href={`/dashboard/users/${owner}`}
                             variant='subtitle1'
-                            color='primary'>
+                            color='secondary'>
                             {ownerData.name}
                         </Typography>
                         <Typography
@@ -91,19 +90,15 @@ const Tweet = React.memo((props: Post) => {
                 </CardContent>
                 <CardActionArea disableRipple onClick={redirectToPost}>
                     <Typography
-                        className={styles.card__post_content}
-                        // component='p'
-                        variant='body1'
+                        component='p'
+                        variant='body2'
                         sx={{
-                            // maxLength: "100px",
-                            // overflow: "hidden",
-                            // textOverflow: "ellipsis",
                             wordWrap: "break-word",
                             wordBreak: "break-all",
                         }}>
                         {content.length < 150
                             ? content
-                            : content.substr(0, 150) + "..."}
+                            : content.substring(0, 150) + "..."}
                     </Typography>
                 </CardActionArea>
             </div>

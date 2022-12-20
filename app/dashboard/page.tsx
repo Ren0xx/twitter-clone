@@ -20,5 +20,6 @@ export default function Dashboard() {
         //     router.push("/dashboard");
         // }
     }, [user, router]);
-    return <Feed />;
+    // return <Feed />;
+    return <div>feed</div>;
 }

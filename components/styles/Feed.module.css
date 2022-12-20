@@ -65,11 +65,3 @@
 .card__bottom div svg {
     cursor: pointer;
 }
-
-.card__post__content {
-    /* display: inline-block; */
-    /* width: 50px;
-    white-space: nowrap;
-    overflow: hidden !important;
-    text-overflow: ellipsis; */
-}

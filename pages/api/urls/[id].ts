@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
       return res.status(200).json(remoteImagePath[0]);
     } else {
-      // The file does not exist, so you can return a default image link
+      // The file does not exist, return a default image link
       return res.status(200).json('https://firebasestorage.googleapis.com/v0/b/fake-twitter0.appspot.com/o/users%2FnoUser%2Fno-user.jpg?alt=media&token=7032fd77-d574-47c1-aceb-eee961dfc1fc');
     }
   } catch (error) {

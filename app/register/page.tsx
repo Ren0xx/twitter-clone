@@ -123,12 +123,10 @@ export default function Register() {
         const userData: User = {
             at: at,
             name: name,
-            email: email,
             joinedDate: Timestamp.now(),
             following: [],
             followers: [],
             tweets: [],
-            replies: [],
         };
         createUser(reset, userData, url, values);
     };
