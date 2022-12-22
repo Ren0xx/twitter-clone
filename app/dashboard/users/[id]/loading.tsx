@@ -1,5 +1,5 @@
-
-import Loader from "../../../components/Loading";
+'use client'
+import Loader from "@/components/Loading";
 const Loading = () => {
     return <Loader />;
 };

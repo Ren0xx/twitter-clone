@@ -1,13 +1,12 @@
 
 type User = {
-    uid?: string;
+    uid?: string | null;
     at: string;
     name: string;
     profilePicture?: string;
     joinedDate: {nanoseconds: number, seconds: number};
     following: string[];
     followers: string[];
-    tweets: string[];
 }
 
 export default User;

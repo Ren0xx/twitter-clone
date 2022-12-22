@@ -119,14 +119,13 @@ export default function Register() {
     //sending data
     const sendUserData = async (values: any, reset: () => void) => {
         const url = process.env.NEXT_PUBLIC_BASE_URL + "/api/users";
-        const { at, name, email } = values;
+        const { at, name } = values;
         const userData: User = {
             at: at,
             name: name,
             joinedDate: Timestamp.now(),
             following: [],
             followers: [],
-            tweets: [],
         };
         createUser(reset, userData, url, values);
     };

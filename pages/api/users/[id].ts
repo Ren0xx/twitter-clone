@@ -14,7 +14,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (!doc.exists) {
         res.status(404).end();
       } else {
-        res.status(200).json(doc.data());
+        const data = doc.data();
+        const uid = doc.id;
+        res.status(200).json({ uid, ...data });
+        
       }
     } else if (req.method === 'DELETE') {
       await db.collection('users').doc(id).delete();

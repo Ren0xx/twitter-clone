@@ -11,7 +11,8 @@ import {
     useRef,
     ChangeEvent,
 } from "react";
-import React, { lazy, Suspense } from "react";
+import uuid from "react-uuid";
+import React, { lazy } from "react";
 const Tweet = lazy(() => import("./Tweet"));
 import useDebounce from "@/utils/useDebounce";
 import fetcher from "@/utils/fetcher";
@@ -74,19 +75,17 @@ const Feed = () => {
                 fullWidth
                 className={styles.searchBar}
             />
-            {/* <Suspense fallback={<Loading />}>
-                {filteredTweets.map((post: Post) => (
-                    <Tweet
-                        key={post.uid}
-                        uid={post.uid}
-                        owner={post.owner}
-                        content={post.content}
-                        likes={post.likes}
-                        numberOfReplies={post.numberOfReplies}
-                        timeAdded={post.timeAdded}
-                    />
-                ))}
-            </Suspense> */}
+            {/* {filteredTweets.map((post: Post) => (
+                <Tweet
+                    key={uuid()}
+                    uid={post.uid}
+                    owner={post.owner}
+                    content={post.content}
+                    likes={post.likes}
+                    numberOfReplies={post.numberOfReplies}
+                    timeAdded={post.timeAdded}
+                />
+            ))} */}
             {isValidating && <Loading />}
         </main>
     );
