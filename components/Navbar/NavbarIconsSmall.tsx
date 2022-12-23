@@ -11,8 +11,11 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import Link from "next/link";
+import { useUserStore } from "@/utils/useAuth";
 
 const NavbarIconsSmall = () => {
+    const user = useUserStore((state) => state.user);
+    const id =  user !== null ? user.uid : 'no-user';
     return (
         <>
             <IconButton
@@ -60,7 +63,7 @@ const NavbarIconsSmall = () => {
             <IconButton
                 color='secondary'
                 component={Link}
-                href='/dashboard/profile'
+                href={`/dashboard/users/${id}`}
                 title='profile'>
                 <PermIdentityIcon />
             </IconButton>

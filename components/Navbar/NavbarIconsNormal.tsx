@@ -12,7 +12,12 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import Link from "next/link";
 
+import { useUserStore } from "@/utils/useAuth";
+
+
 const NavbarIconsNormal = () => {
+    const user = useUserStore((state) => state.user);
+    const id =  user !== null ? user.uid : 'no-user';
     return (
         <>
             <Button
@@ -62,7 +67,7 @@ const NavbarIconsNormal = () => {
                 color='secondary'
                 startIcon={<PermIdentityIcon />}
                 component={Link}
-                href='/dashboard/profile'>
+                href={`/dashboard/users/${id}`}>
                 Profile
             </Button>
             <Button

@@ -17,6 +17,7 @@ import styles from "../styles/TweetForm.module.css";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 
+import {useUserStore} from "@/utils/useAuth";
 type ModalForm = {
     open: boolean;
     handleClose: () => void;
@@ -24,8 +25,7 @@ type ModalForm = {
 
 const TweetForm = (props: ModalForm) => {
     const { open, handleClose } = props;
-    const auth = getAuth(app);
-    const [user] = useAuthState(auth);
+    const user = useUserStore((state) => state.user);
 
     const { data: photoUrl } = useSWR(
         process.env.NEXT_PUBLIC_BASE_URL + `/api/urls/${user?.uid}`,

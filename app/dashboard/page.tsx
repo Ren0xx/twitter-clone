@@ -10,15 +10,5 @@ export default function Dashboard() {
     const auth = getAuth(app);
     const router = useRouter();
     const [user] = useAuthState(auth);
-
-    useEffect(() => {
-        // if (!user) {
-        //     router.push("/login");
-        // }
-        // if (user) {
-        //     console.log(user);
-        //     router.push("/dashboard");
-        // }
-    }, [user, router]);
     return <Feed />;
 }

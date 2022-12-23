@@ -8,15 +8,10 @@ import Loader from "@/components/Loading";
 export default function Profile() {
     const router = useRouter();
     const pathname = usePathname();
-
-    let userID = null;
-    if (pathname !== null) {
-        userID = pathname.split("/")[3];
-    }
+    const userID = pathname !== null ? pathname.split('/')[3] : "no-user";
     const {
         data: userData,
         error,
-        isValidating,
     } = useSWR(
         process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${userID}`,
         fetcher
@@ -27,7 +22,6 @@ export default function Profile() {
     if (error) {
         return <p>Error loading data</p>;
     }
-    console.log(userData);
     return (
         <>
             <UserProfile

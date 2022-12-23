@@ -27,6 +27,7 @@ const Feed = () => {
         fetcher,
         {
             suspense: true,
+            refreshInterval: 1000,
         }
     );
 
@@ -75,7 +76,7 @@ const Feed = () => {
                 fullWidth
                 className={styles.searchBar}
             />
-            {/* {filteredTweets.map((post: Post) => (
+            {filteredTweets.map((post: Post) => (
                 <Tweet
                     key={uuid()}
                     uid={post.uid}
@@ -85,7 +86,7 @@ const Feed = () => {
                     numberOfReplies={post.numberOfReplies}
                     timeAdded={post.timeAdded}
                 />
-            ))} */}
+            ))}
             {isValidating && <Loading />}
         </main>
     );

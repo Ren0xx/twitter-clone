@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+import {useAuth} from "@/utils/useAuth"
+
 import {
     InputAdornment,
     Button,
@@ -34,9 +36,6 @@ const validationSchema = yup.object({
 });
 
 export default function Login() {
-    const auth = getAuth(app);
-    const router = useRouter();
-
     const theme = useTheme((state: { theme: any }) => state.theme);
     const inputBgColor = theme === "light" ? "#fff" : "#16181c";
     const inputStyle = {
@@ -47,6 +46,8 @@ export default function Login() {
         setIsErrorOpen(false);
     };
 
+    const {login} = useAuth();
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -54,20 +55,20 @@ export default function Login() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            handleLogin(values.email, values.password);
+            login(values.email, values.password)
+            // handleLogin(values.email, values.password);
         },
     });
 
-    const handleLogin = (email: string, password: string) => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
-                router.push("/dashboard");
-            })
-            .catch(() => {
-                formik.values.password = "";
-                setIsErrorOpen(true);
-            });
-    };
+    //     signInWithEmailAndPassword(auth, email, password)
+    //         .then(() => {
+    //             router.push("/dashboard");
+    //         })
+    //         .catch(() => {
+    //             formik.values.password = "";
+    //             setIsErrorOpen(true);
+    //         });
+    // };
     return (
         <>
             <Stack

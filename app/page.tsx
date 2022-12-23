@@ -9,6 +9,7 @@ export default function Home() {
     const auth = getAuth(app);
     const router = useRouter();
     const [user] = useAuthState(auth);
+    
 
     // useEffect(() => {
     //     if (user) {

@@ -26,6 +26,7 @@ const UserProfile = (props: User) => {
         fetcher,
         {
             suspense: true,
+            refreshInterval: 100,
         }
     );
     const { data: photoUrl } = useSWR(
