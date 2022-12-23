@@ -4,18 +4,33 @@ import { Button, useMediaQuery, IconButton } from "@mui/material";
 import { NoSsr } from "@mui/base";
 import { useState } from "react";
 import ThemeSwitchButton from "../ThemeSwitchButton";
+import { getAuth, signOut } from "firebase/auth";
 //icons
 import TwitterIcon from "@mui/icons-material/Twitter";
 import TweetForm from "../Feed/TweetForm";
+import { useRouter } from "next/navigation";
 
 import NavbarIconsNormal from "./NavbarIconsNormal";
 import NavbarIconsSmall from "./NavbarIconsSmall";
 const Navbar = () => {
+    const auth = getAuth();
+    const router = useRouter();
     const smDown = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
 
     const [open, setOpen] = useState<boolean>(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const logout = () => {
+        signOut(auth)
+            .then(() => {
+                router.push("/login");
+            })
+            .catch(() => {
+                console.log("Something went wrong");
+            });
+    };
+
     return (
         <div className={styles.menu}>
             <div className={styles.icons__top}>
@@ -35,6 +50,13 @@ const Navbar = () => {
                 }}
                 color='primary'>
                 Tweet
+            </Button>
+            <Button
+                sx={{ mt: "20em", maxWidth: "8em" }}
+                onClick={logout}
+                variant='outlined'
+                size='small'>
+                Sign Out
             </Button>
             <TweetForm open={open} handleClose={handleClose} />
         </div>

@@ -41,7 +41,7 @@ const TweetForm = (props: ModalForm) => {
         validationSchema: Yup.object({
             tweet: Yup.string().required().max(280),
         }),
-        onSubmit: (values, { resetForm}) => {
+        onSubmit: (values, { resetForm }) => {
             if (user) {
                 postTweet(values.tweet, user.uid);
                 handleClose();

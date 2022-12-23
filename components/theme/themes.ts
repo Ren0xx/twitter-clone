@@ -13,7 +13,7 @@ export const darkTheme = createTheme({
           paper: '#000000',
         },
         info: {
-          main: '#000000',
+          main: '#3949ab',
         },
         
       },

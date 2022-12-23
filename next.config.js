@@ -17,7 +17,6 @@ const nextConfig = {
         minimumCacheTTL: 1500000,
     },
     basePath: basePath,
-    
 };
 
 module.exports = nextConfig;
