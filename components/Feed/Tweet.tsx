@@ -37,11 +37,11 @@ import getDayFromTime from "@/utils/dates/getDayFromTime";
 import { useUserStore } from "@/utils/useAuth";
 import deleteTweet from "@/utils/deleteTweet";
 const areEqual = (prevProps: Post, nextProps: Post) => {
-    const { uid, numberOfReplies, likes, owner, content, timeAdded } =
+    const { uid, replies, likes, owner, content, timeAdded } =
         prevProps;
     return (
         uid === nextProps.uid &&
-        numberOfReplies === nextProps.numberOfReplies &&
+        replies=== nextProps.replies &&
         likes === nextProps.likes &&
         owner === nextProps.owner &&
         content === nextProps.content &&
@@ -51,7 +51,7 @@ const areEqual = (prevProps: Post, nextProps: Post) => {
 };
 const Tweet = React.memo((props: Post) => {
     const user = useUserStore((state) => state.user);
-    const { uid, numberOfReplies, likes, owner, content, timeAdded } = props;
+    const { uid, replies, likes, owner, content, timeAdded } = props;
     const router = useRouter();
 
     const dayWhenPosted = useMemo(() => {
@@ -84,9 +84,9 @@ const Tweet = React.memo((props: Post) => {
         setDialogOpen(true);
         setMenuAnchor(null);
     };
-    const handleDelete = () => {
-        handleMenuClose();
-    };
+    // const handleDelete = () => {
+    //     handleMenuClose();
+    // };
     //dialog
     const handleDialogClose = () => {
         setDialogOpen(false);
@@ -146,7 +146,7 @@ const Tweet = React.memo((props: Post) => {
                                 <ListItemIcon>
                                     <ClearIcon />
                                 </ListItemIcon>
-                                <ListItemText >Delete</ListItemText>
+                                <ListItemText>Delete</ListItemText>
                             </MenuItem>
                         </Menu>
                         {/* Confirmation dialog */}
@@ -186,7 +186,7 @@ const Tweet = React.memo((props: Post) => {
                         onClick={redirectToPost}
                         aria-label='retweet'
                     />
-                    <Typography>{numberOfReplies}</Typography>
+                    <Typography>{replies.length}</Typography>
                 </div>
                 <div>
                     <RepeatIcon aria-label='share' />

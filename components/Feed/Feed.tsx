@@ -68,7 +68,7 @@ const Feed = () => {
         <main
             className={styles.mainFeed}
             ref={gridRef}
-            style={{ height: filteredTweets.length > 0 ? "100%" : "100vh" }}>
+            style={{ minHeight: "100vh" }}>
             <TextField
                 label='Search tweets'
                 onChange={handleSearchChange}
@@ -83,7 +83,7 @@ const Feed = () => {
                     owner={post.owner}
                     content={post.content}
                     likes={post.likes}
-                    numberOfReplies={post.numberOfReplies}
+                    replies={post.replies}
                     timeAdded={post.timeAdded}
                 />
             ))}

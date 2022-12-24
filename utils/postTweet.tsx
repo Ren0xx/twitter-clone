@@ -10,7 +10,7 @@ const postTweet = async (content: string, ownerId: string) => {
         content: content,
         timeAdded: Timestamp.now(),
         likes: 0,
-        numberOfReplies: 0,
+        replies: [],
     };
     try {
         await axios.post(url, postData);

@@ -17,10 +17,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
+import useFollow from "@/utils/useFollow";
+import { useUserStore } from "@/utils/useAuth";
 const UserProfile = (props: User) => {
     const router = useRouter();
+
     const { uid, at, name, joinedDate, following, followers } = props;
     const date = getDayFromTime(joinedDate.nanoseconds, joinedDate.seconds);
+
     const { data: userPosts } = useSWR(
         process.env.NEXT_PUBLIC_BASE_URL + `/api/userPosts/${uid}`,
         fetcher,
@@ -36,6 +40,22 @@ const UserProfile = (props: User) => {
             suspense: true,
         }
     );
+
+    const loggedUserId = useUserStore((store) => store.user?.uid) as string;
+    const loggedUserUrl =
+        process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${loggedUserId}`;
+
+    const { data: loggedUser, error } = useSWR(loggedUserUrl, fetcher, {
+        refreshInterval: 100,
+    });
+    if (error) {
+        return <div>An error occurred: {error.message}</div>;
+    }
+    if (!loggedUser) {
+        return <div>Loading...</div>;
+    }
+    const isProfileOwner = loggedUserId === uid;
+
     return (
         <Grid container direction='column' alignItems='stretch' rowSpacing={3}>
             <Grid
@@ -62,6 +82,13 @@ const UserProfile = (props: User) => {
                             alt='Profile photo'
                             className={styles.avatar}
                         />
+                        <FollowButton
+                            userFollowers={followers}
+                            userId={uid}
+                            followerId={loggedUserId}
+                            isProfileOwner={isProfileOwner}
+                            currentUserFollowing={loggedUser.following}
+                        />
                     </div>
                 </div>
             </Grid>
@@ -79,14 +106,14 @@ const UserProfile = (props: User) => {
                         component={Link}
                         variant='body2'
                         href=''>
-                        {following.length} Followers
+                        {followers.length} Followers
                     </Typography>
                     <Typography
                         color='textSecondary'
                         component={Link}
                         variant='body2'
                         href=''>
-                        {followers.length} Following
+                        {following.length} Following
                     </Typography>
                 </div>
             </Grid>
@@ -102,7 +129,7 @@ const UserProfile = (props: User) => {
                             owner={post.owner}
                             content={post.content}
                             likes={post.likes}
-                            numberOfReplies={post.numberOfReplies}
+                            replies={post.replies}
                             timeAdded={post.timeAdded}
                         />
                     ))}
@@ -113,3 +140,37 @@ const UserProfile = (props: User) => {
 };
 
 export default UserProfile;
+
+type ProfileProps = {
+    userFollowers: string[];
+    userId: string | null | undefined;
+    followerId: string;
+    isProfileOwner: boolean;
+    currentUserFollowing: string[];
+};
+const FollowButton = (props: ProfileProps) => {
+    const {
+        userFollowers,
+        userId,
+        followerId,
+        isProfileOwner,
+        currentUserFollowing,
+    } = props;
+    const { isFollowing, followOrUnfollow } = useFollow(
+        userFollowers,
+        userId,
+        followerId,
+        currentUserFollowing
+    );
+    return !isProfileOwner ? (
+        <Button
+            onClick={followOrUnfollow}
+            className={styles.followButton}
+            variant='contained'
+            color='secondary'>
+            {isFollowing ? "Unfollow" : "Follow"}
+        </Button>
+    ) : (
+        <></>
+    );
+};

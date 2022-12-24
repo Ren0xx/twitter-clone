@@ -5,5 +5,9 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <Paper variant='outlined'>{children}</Paper>;
+    return (
+        <Paper variant='outlined' sx={{ minHeight: "100vh" }}>
+            {children}
+        </Paper>
+    );
 }

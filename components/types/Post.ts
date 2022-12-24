@@ -4,7 +4,7 @@ type Post = {
     timeAdded: {seconds: number, nanoseconds: number};
     content: string;
     likes: number;
-    numberOfReplies: number;
+    replies: string[];
 
 }
 
