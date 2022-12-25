@@ -22,7 +22,6 @@ import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 
 import getDayFromTime from "@/utils/dates/getDayFromTime";
-import useFollow from "@/utils/useFollow";
 import { useUserStore } from "@/utils/useAuth";
 
 const UserProfile = (props: User) => {
