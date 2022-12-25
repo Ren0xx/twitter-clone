@@ -10,6 +10,8 @@ import {
 import type User from "@/components/types/User";
 import type Post from "@/components/types/Post";
 import Tweet from "@/components/Feed/Tweet";
+import {lazy } from 'react';
+const FollowButton = lazy(() => import("@/components/Profile/FollowButton"));
 
 import styles from "@/components/styles/Profile.module.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -87,11 +89,11 @@ const UserProfile = (props: User) => {
                             className={styles.avatar}
                         />
                         <FollowButton
-                            userFollowers={followers}
-                            userId={uid}
-                            followerId={loggedUserId}
-                            isProfileOwner={isProfileOwner}
-                            currentUserFollowing={loggedUser.following}
+                            ownerFollowers={followers}
+                            ownerId={uid}
+                            loggedUserId={loggedUserId}
+                            loggedUserFollowing={loggedUser.following}
+                            isLoggedUserOwner={isProfileOwner}
                         />
                     </div>
                 </div>
@@ -144,37 +146,3 @@ const UserProfile = (props: User) => {
 };
 
 export default UserProfile;
-
-type ProfileProps = {
-    userFollowers: string[];
-    userId: string | null | undefined;
-    followerId: string;
-    isProfileOwner: boolean;
-    currentUserFollowing: string[];
-};
-const FollowButton = (props: ProfileProps) => {
-    const {
-        userFollowers,
-        userId,
-        followerId,
-        isProfileOwner,
-        currentUserFollowing,
-    } = props;
-    const { isFollowing, followOrUnfollow } = useFollow(
-        userFollowers,
-        userId,
-        followerId,
-        currentUserFollowing
-    );
-    return !isProfileOwner ? (
-        <Button
-            onClick={followOrUnfollow}
-            className={styles.followButton}
-            variant='contained'
-            color='secondary'>
-            {isFollowing ? "Unfollow" : "Follow"}
-        </Button>
-    ) : (
-        <></>
-    );
-};

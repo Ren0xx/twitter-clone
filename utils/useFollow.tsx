@@ -1,50 +1,57 @@
 import axios from "axios";
-import { useState } from "react";
+import create from "zustand";
+
 
 const useFollow = (
-    userFollowers: string[],
-    userId: string | null | undefined ,
-    followerId: string,
-    followerFollowingArray: string[]
+    ownerId: string | null | undefined,
+    ownerFollowers: string[],
+    loggedUserID: string,
+    loggedUserFollowing: string[]
 ) => {
-    const [isFollowing, setIsFollowing] = useState<boolean>(
-        userFollowers.includes(followerId)
-    );
-    const url = process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${userId}`;
-    const currentUserUrl = process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${followerId}`;
+    const url = process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${ownerId}`;
+    const currentUserUrl =
+        process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${loggedUserID}`;
+    const store = create((set) => ({
+        isFollowing: ownerFollowers.includes(loggedUserID),
+        setIsFollowing: (isFollowing: boolean) => set({ isFollowing }),
+    }));
+
+    const isFollowing= store((s:any) => (s.isFollowing));
+    const setIsFollowing = store((s:any) => (s.setIsFollowing));
+
     async function followOrUnfollow() {
-        if (!isFollowing) {
-            try {
+        try {
+            if (!isFollowing) {
                 //add to Followers
-                const updatedFollowers = [followerId, ...userFollowers];
+                const updatedFollowers = [loggedUserID, ...ownerFollowers];
                 await axios.put(url, { followers: updatedFollowers });
                 //add to Following
-                addToFollowing(userId as string);
+                addToFollowing(ownerId as string);
                 setIsFollowing(true);
-            } catch (error) {
-                console.error(error);
+            } else {
+                //remove from Followers
+                const updatedFollowers = ownerFollowers.filter(
+                    (id) => id !== loggedUserID
+                );
+                await axios.put(url, { followers: updatedFollowers });
+                //remove from Following
+                removeFromFollowing(ownerId as string);
+                setIsFollowing(false);
             }
-            return;
-        }
-
-        try {
-            //remove from Followers
-            const updatedFollowers = userFollowers.filter(id => id !== followerId)
-            await axios.put(url, {followers: updatedFollowers});
-            //remove from Following
-            removeFromFollowing(userId as string);
-            setIsFollowing(false);
         } catch (error) {
             console.error(error);
         }
     }
-    async function addToFollowing(userId: string){
-        const updatedFollowing = [userId, ...followerFollowingArray]
-        axios.put(currentUserUrl, {following: updatedFollowing})
+
+    async function addToFollowing(userId: string) {
+        const updatedFollowing = [userId, ...loggedUserFollowing];
+        axios.put(currentUserUrl, { following: updatedFollowing });
     }
-    async function removeFromFollowing(userId:string) {
-      const updatedFollowing = followerFollowingArray.filter(id => id !== userId);
-      await axios.put(currentUserUrl, {following: updatedFollowing})
+    async function removeFromFollowing(userId: string) {
+        const updatedFollowing = loggedUserFollowing.filter(
+            (id) => id !== userId
+        );
+        await axios.put(currentUserUrl, { following: updatedFollowing });
     }
 
     return { isFollowing, followOrUnfollow };

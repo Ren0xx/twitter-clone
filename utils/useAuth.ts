@@ -61,7 +61,7 @@ export const useAuth = () => {
 
   // Automatically login the user if they are already authenticated
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser({
           uid: user.uid,
@@ -73,6 +73,10 @@ export const useAuth = () => {
         router.push('/login');
       }
     });
+    return () => {
+      unsubscribe();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { login, logout, register };
