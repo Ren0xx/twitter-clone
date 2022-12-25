@@ -18,7 +18,7 @@ import useDebounce from "@/utils/useDebounce";
 import fetcher from "@/utils/fetcher";
 
 const Feed = () => {
-    const { data, size, setSize, isValidating } = useSWRInfinite(
+    const { data, error, size, setSize, isValidating } = useSWRInfinite(
         (index, previousPageData) =>
             process.env.NEXT_PUBLIC_BASE_URL +
             `/api/posts?page=${index}&limit=${
@@ -64,6 +64,9 @@ const Feed = () => {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
+    if (error) {
+        return <div>Something went wrong.</div>;
+    }
     return (
         <main
             className={styles.mainFeed}
@@ -76,7 +79,7 @@ const Feed = () => {
                 fullWidth
                 className={styles.searchBar}
             />
-            {filteredTweets.map((post: Post) => (
+            {/* {filteredTweets.map((post: Post) => (
                 <Tweet
                     key={uuid()}
                     uid={post.uid}
@@ -87,7 +90,7 @@ const Feed = () => {
                     timeAdded={post.timeAdded}
                 />
             ))}
-            {isValidating && <Loading />}
+            {isValidating && <Loading />} */}
         </main>
     );
 };

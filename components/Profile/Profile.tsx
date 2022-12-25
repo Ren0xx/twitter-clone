@@ -10,15 +10,19 @@ import {
 import type User from "@/components/types/User";
 import type Post from "@/components/types/Post";
 import Tweet from "@/components/Feed/Tweet";
-import getDayFromTime from "@/utils/dates/getDayFromTime";
+
 import styles from "@/components/styles/Profile.module.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
+
+import getDayFromTime from "@/utils/dates/getDayFromTime";
 import useFollow from "@/utils/useFollow";
 import { useUserStore } from "@/utils/useAuth";
+
 const UserProfile = (props: User) => {
     const router = useRouter();
 

@@ -5,8 +5,8 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import useTheme from "./theme/theme";
 
 const ThemeSwitchButton = () => {
-    const theme = useTheme((s) => s.theme);
-    const setTheme = useTheme((s) => s.setTheme);
+    const theme = useTheme((s:any) => s.theme);
+    const setTheme = useTheme((s:any) => s.setTheme);
     return (
         <IconButton
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
