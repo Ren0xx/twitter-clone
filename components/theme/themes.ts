@@ -4,6 +4,7 @@ export const darkTheme = createTheme({
         mode: 'dark',
         primary: {
           main: '#1d9bf0',
+          dark: "#121212"
         },
         secondary: {
           main: '#ede7f6',
@@ -21,7 +22,9 @@ export const darkTheme = createTheme({
         button: {
           textTransform: 'none'
         },
+        
       },
+      
       
 })
 export const lightTheme = createTheme({
@@ -30,7 +33,7 @@ export const lightTheme = createTheme({
         primary: {
           main: '#1d9bf0'
         },
-        secondary: {main: '#1d9bf1'},
+        secondary: {main: '#1d1d1d'},
         info: {
           main: '#ffffff',
         },

@@ -41,10 +41,6 @@ const FollowersFollowing = () => {
     if (!followersData || !followingData) {
         return <div>Loading...</div>;
     }
-
-    // console.log(followersData);
-    // console.log(followingData);
-
     return (
         <>
             <Button
@@ -56,7 +52,9 @@ const FollowersFollowing = () => {
                     variant='fullWidth'
                     centered
                     value={selectedTab}
-                    onChange={(event, newValue) => setSelectedTab(newValue)}>
+                    textColor='secondary'
+                    indicatorColor='secondary'
+                    onChange={(_, newValue) => setSelectedTab(newValue)}>
                     <Tab label='Followers' value='followers' />
                     <Tab label='Following' value='following' />
                 </Tabs>

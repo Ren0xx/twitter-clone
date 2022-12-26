@@ -1,22 +1,29 @@
 "use client";
-import { List, ListItem, Avatar, Typography, Button } from "@mui/material";
+import { List, ListItem, Avatar, Box, Typography, Button } from "@mui/material";
 import type User from "@/components/types/User";
-
+import UserListProfile from "./UserListProfile";
 type ProfileProps = {
     users: User[];
 };
-
-function UserList({ users }: ProfileProps) {
+export default function UserList({ users }: ProfileProps) {
     return (
-            <List>
-            {users.map((user) => (
+        <List>
+            {users?.map((user) => (
                 <ListItem key={user.uid}>
-                    {/* <Avatar src={user.profilePictureUrl} /> */}
-                    <Typography>{user.name}</Typography>
-                    {/* Display additional profile information here, such as the user's name or bio */}
+                    <UserListProfile user={user} />
                 </ListItem>
             ))}
+            {users.length === 0 && (
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        paddingTop: "5em",
+                    }}>
+                    <Typography variant='h6'>No users yet : /.</Typography>
+                </Box>
+            )}
         </List>
     );
 }
-export default UserList;

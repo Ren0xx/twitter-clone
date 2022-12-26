@@ -51,3 +51,14 @@
     min-width: 8em;
     border-bottom: 2px solid #1d9bf0;
 }
+
+.userList__profile {
+    display: flex;
+    column-gap: 0.7em;
+    align-items: center;
+    width: 100%;
+    padding-top: .9em;
+    padding-bottom: .9em;
+    padding-left: .5em;
+    border-radius: .9em;
+}

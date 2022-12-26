@@ -27,7 +27,7 @@ const Feed = () => {
         fetcher,
         {
             suspense: true,
-            refreshInterval: 1000,
+            // refreshInterval: 1000,
         }
     );
 

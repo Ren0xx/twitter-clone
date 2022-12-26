@@ -10,7 +10,7 @@ import {
 import type User from "@/components/types/User";
 import type Post from "@/components/types/Post";
 import Tweet from "@/components/Feed/Tweet";
-import {lazy } from 'react';
+import { lazy } from "react";
 const FollowButton = lazy(() => import("@/components/Profile/FollowButton"));
 
 import styles from "@/components/styles/Profile.module.css";
@@ -35,7 +35,7 @@ const UserProfile = (props: User) => {
         fetcher,
         {
             suspense: true,
-            refreshInterval: 100,
+            // refreshInterval: 100,
         }
     );
     const { data: photoUrl } = useSWR(
@@ -51,7 +51,7 @@ const UserProfile = (props: User) => {
         process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${loggedUserId}`;
 
     const { data: loggedUser, error } = useSWR(loggedUserUrl, fetcher, {
-        refreshInterval: 100,
+        // refreshInterval: 100,
     });
     if (error) {
         return <div>An error occurred: {error.message}</div>;
@@ -110,14 +110,14 @@ const UserProfile = (props: User) => {
                         color='textSecondary'
                         component={Link}
                         variant='body2'
-                        href=''>
+                        href={`/dashboard/users/${uid}/followers_following`}>
                         {followers.length} Followers
                     </Typography>
                     <Typography
                         color='textSecondary'
                         component={Link}
                         variant='body2'
-                        href=''>
+                        href={`/dashboard/users/${uid}/followers_following`}>
                         {following.length} Following
                     </Typography>
                 </div>
