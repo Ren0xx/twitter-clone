@@ -10,7 +10,7 @@ const useLikeDislike = (initialLikes: number, uid: string) => {
             try {
                 console.log(uid)
                 await axios.put(
-                    process.env.NEXT_PUBLIC_BASE_URL + `/api/posts/${uid}`,
+                    process.env.NEXT_PUBLIC_BASE_URL + `/api/replies/${uid}`,
                     {
                         likes: localLikes - 1,
                     }
@@ -24,7 +24,7 @@ const useLikeDislike = (initialLikes: number, uid: string) => {
         }
         try {
             await axios.put(
-                process.env.NEXT_PUBLIC_BASE_URL + `/api/posts/${uid}`,
+                process.env.NEXT_PUBLIC_BASE_URL + `/api/replies/${uid}`,
                 {
                     likes: localLikes + 1,
                 }

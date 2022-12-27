@@ -1,7 +1,8 @@
 "use client";
-import { List, ListItem, Avatar, Box, Typography, Button } from "@mui/material";
+import { List, ListItem, Box, Typography } from "@mui/material";
 import type User from "@/components/types/User";
 import UserListProfile from "./UserListProfile";
+
 type ProfileProps = {
     users: User[];
 };
@@ -21,7 +22,7 @@ export default function UserList({ users }: ProfileProps) {
                         justifyContent: "center",
                         paddingTop: "5em",
                     }}>
-                    <Typography variant='h6'>No users yet : /.</Typography>
+                    <Typography variant='h6'>No users yet :/.</Typography>
                 </Box>
             )}
         </List>

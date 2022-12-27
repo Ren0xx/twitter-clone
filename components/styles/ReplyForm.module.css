@@ -1,0 +1,22 @@
+.form {
+    display: grid;
+    grid-template-columns: 1fr 8fr 1fr;
+    padding: 0.5em;
+    gap: 0.8em;
+    align-items: center;
+    border: 0.1em solid #2f3336;
+
+}
+
+.form__left {
+    text-align: left;
+    padding: 0.5em;
+}
+
+.form__left>div {
+    margin-bottom: 1em;
+}
+
+.submitButton {
+    border-radius: 2em;
+}

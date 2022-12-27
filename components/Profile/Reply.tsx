@@ -32,17 +32,22 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ClearIcon from "@mui/icons-material/Clear";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RepeatIcon from "@mui/icons-material/Repeat";
-import useLikeDislike from "@/utils/useLikeDislike";
-import getDayFromTime from "@/utils/dates/getDayFromTime";
+import useLikeDislikeForReply from "@/utils/useLikeDislikeForReply";
+import getDayAndTime from "@/utils/dates/getDayandTime";
 import { useUserStore } from "@/utils/useAuth";
 import deleteTweet from "@/utils/deleteTweet";
+type Reply = {
+    uid: string;
+    owner: string;
+    timeAdded: { seconds: number; nanoseconds: number };
+    content: string;
+    likes: number;
+};
 
-import { usePathname } from "next/navigation";
-const areEqual = (prevProps: Post, nextProps: Post) => {
-    const { uid, replies, likes, owner, content, timeAdded } = prevProps;
+const areEqual = (prevProps: Reply, nextProps: Reply) => {
+    const { uid, likes, owner, content, timeAdded } = prevProps;
     return (
         uid === nextProps.uid &&
-        replies === nextProps.replies &&
         likes === nextProps.likes &&
         owner === nextProps.owner &&
         content === nextProps.content &&
@@ -50,15 +55,14 @@ const areEqual = (prevProps: Post, nextProps: Post) => {
         timeAdded.seconds === nextProps.timeAdded.seconds
     );
 };
-const Tweet = React.memo((props: Post) => {
+const Reply = React.memo((props: Reply) => {
     const user = useUserStore((state) => state.user);
-    const { uid, replies, likes, owner, content, timeAdded } = props;
-    const router = useRouter();
-    const pathname = usePathname();
+    const { uid, likes, owner, content, timeAdded } = props;
 
     const dayWhenPosted = useMemo(() => {
-        return getDayFromTime(timeAdded.nanoseconds, timeAdded.seconds);
+        return getDayAndTime(timeAdded.nanoseconds, timeAdded.seconds);
     }, [timeAdded.nanoseconds, timeAdded.seconds]);
+
     const { data: ownerData } = useSWR(
         process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${owner}`,
         fetcher,
@@ -73,9 +77,7 @@ const Tweet = React.memo((props: Post) => {
             suspense: true,
         }
     );
-    const redirectToPost = () => {
-        router.push(`/dashboard/tweets/${uid}`);
-    };
+
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     //menu
@@ -90,26 +92,17 @@ const Tweet = React.memo((props: Post) => {
     //     handleMenuClose();
     // };
     //dialog
-    const isOnTweetsUrl = () => {
-        if (pathname !== null) {
-            return pathname.split("/")[2] === "tweets";
-        }
-        return false;
-    };
     const handleDialogClose = () => {
         setDialogOpen(false);
     };
     const handleConfirm = () => {
         deleteTweet(uid);
         handleDialogClose();
-
-        //check if user is deleting his tweet being on */tweets directory
-        if (isOnTweetsUrl()) {
-            router.push("/dashboard");
-        }
     };
-
-    const { isLiked, localLikes, likeOrDislike } = useLikeDislike(likes, uid);
+    const { isLiked, localLikes, likeOrDislike } = useLikeDislikeForReply(
+        likes,
+        uid
+    );
     return (
         <Card className={styles.card} variant='outlined'>
             <div className={styles.card__photo}>
@@ -179,7 +172,7 @@ const Tweet = React.memo((props: Post) => {
                         </Dialog>
                     </div>
                 </CardContent>
-                <CardActionArea disableRipple onClick={redirectToPost}>
+                <CardActionArea disableRipple>
                     <Typography
                         component='p'
                         variant='body2'
@@ -195,11 +188,7 @@ const Tweet = React.memo((props: Post) => {
             </div>
             <CardActions className={styles.card__bottom}>
                 <div>
-                    <ChatBubbleOutlineIcon
-                        onClick={redirectToPost}
-                        aria-label='retweet'
-                    />
-                    <Typography>{replies.length}</Typography>
+                    <ChatBubbleOutlineIcon aria-label='retweet' />
                 </div>
                 <div>
                     <RepeatIcon aria-label='share' />
@@ -218,5 +207,5 @@ const Tweet = React.memo((props: Post) => {
         </Card>
     );
 }, areEqual);
-Tweet.displayName = "Tweet";
-export default Tweet;
+Reply.displayName = "Reply";
+export default Reply;

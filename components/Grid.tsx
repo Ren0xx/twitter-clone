@@ -1,5 +1,5 @@
 "use client";
-import {  Grid as LayoutGrid} from "@mui/material";
+import { Grid as LayoutGrid } from "@mui/material";
 import Navbar from "@/components/Navbar/Navbar";
 
 const Grid = ({ children }: { children: React.ReactNode }) => {
@@ -8,10 +8,24 @@ const Grid = ({ children }: { children: React.ReactNode }) => {
             container
             justifyContent='flex-start'
             alignItems='flex-start'>
-            <LayoutGrid sx={{ position: "sticky", top: "0.8rem" }} item xs={3}>
+            <LayoutGrid
+                sx={{
+                    position: "sticky",
+                    top: "0.8rem",
+                }}
+                item
+                xs={3}>
                 <Navbar />
             </LayoutGrid>
-            <LayoutGrid item xs={9} md={6} >
+            <LayoutGrid
+                sx={{
+                    borderRight: "1px solid #2f3336",
+                    borderLeft: "1px solid #2f3336",
+                    minHeight: "100vh",
+                }}
+                item
+                xs={9}
+                md={6}>
                 {children}
             </LayoutGrid>
             <LayoutGrid

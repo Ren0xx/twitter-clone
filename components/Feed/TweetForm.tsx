@@ -35,7 +35,7 @@ const TweetForm = (props: ModalForm) => {
             tweet: "",
         },
         validationSchema: Yup.object({
-            tweet: Yup.string().required().max(280),
+            tweet: Yup.string().required().min(1).max(280),
         }),
         onSubmit: (values, { resetForm }) => {
             if (user) {
@@ -63,6 +63,7 @@ const TweetForm = (props: ModalForm) => {
                         name='tweet'
                         multiline
                         rows={4}
+                        placeholder='Write something...'
                         value={formik.values.tweet}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
