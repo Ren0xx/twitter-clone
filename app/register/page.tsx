@@ -146,7 +146,7 @@ export default function Register() {
                 uid,
                 ...userData,
             });
-            uploadBytes(
+            await uploadBytes(
                 ref(storage, `/users/${uid}/profilePicture`),
                 profilePicture
             );
@@ -160,145 +160,148 @@ export default function Register() {
     };
 
     return (
-        <Stack
-            spacing={3}
-            sx={{ width: "25rem" }}
-            component='form'
-            onSubmit={formik.handleSubmit}>
-            <TwitterIcon fontSize='large' />
-            <Typography variant='h4'>Create an account</Typography>
-            <Button
-                onClick={handleClick}
-                variant='outlined'
-                color={uploadFileButtonColor}
-                component='label'>
-                Upload profile picture
-                <input
-                    type='file'
-                    ref={hiddenFileInput}
-                    onChange={onChange}
-                    hidden
-                    accept='image/*'
+        <>
+            <Stack
+                spacing={3}
+                sx={{ width: "25rem" }}
+                component='form'
+                onSubmit={formik.handleSubmit}>
+                <TwitterIcon fontSize='large' />
+                <Typography variant='h4'>Create an account</Typography>
+                <Button
+                    onClick={handleClick}
+                    variant='outlined'
+                    color={uploadFileButtonColor}
+                    component='label'>
+                    Upload profile picture
+                    <input
+                        type='file'
+                        ref={hiddenFileInput}
+                        onChange={onChange}
+                        hidden
+                        accept='image/*'
+                    />
+                </Button>
+                <TextField
+                    id='at'
+                    name='at'
+                    label='At'
+                    value={formik.values.at}
+                    onChange={formik.handleChange}
+                    error={formik.touched.at && Boolean(formik.errors.at)}
+                    helperText={formik.touched.at && formik.errors.at}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <AlternateEmailIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{ style: inputStyle }}
                 />
-            </Button>
-            <TextField
-                id='at'
-                name='at'
-                label='At'
-                value={formik.values.at}
-                onChange={formik.handleChange}
-                error={formik.touched.at && Boolean(formik.errors.at)}
-                helperText={formik.touched.at && formik.errors.at}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position='start'>
-                            <AlternateEmailIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                inputProps={{ style: inputStyle }}
-            />
-            <TextField
-                id='name'
-                name='name'
-                label='Username'
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position='start'>
-                            <AccountBoxIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                inputProps={{ style: inputStyle }}
-            />
-            <TextField
-                fullWidth
-                id='email'
-                name='email'
-                label='Email'
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position='start'>
-                            <MailOutlineIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                inputProps={{ style: inputStyle }}
-            />
-            <TextField
-                color='primary'
-                fullWidth
-                id='password'
-                name='password'
-                label='Password'
-                type='password'
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position='start'>
-                            <KeyIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                inputProps={{ style: inputStyle }}
-            />
-            <TextField
-                color='primary'
-                fullWidth
-                id='confirmPassword'
-                name='confirmPassword'
-                label='Repeat password'
-                type='password'
-                value={formik.values.confirmPassword}
-                onChange={formik.handleChange}
-                error={
-                    formik.touched.confirmPassword &&
-                    Boolean(formik.errors.confirmPassword)
-                }
-                helperText={
-                    formik.touched.confirmPassword &&
-                    formik.errors.confirmPassword
-                }
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position='start'>
-                            <KeyIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                inputProps={{ style: inputStyle }}
-            />
-            <Button
-                type='submit'
-                variant='contained'
-                color='secondary'
-                size='large'
-                sx={{ borderRadius: "15px" }}
-                disabled={profilePicture === undefined}>
-                Sign up
-            </Button>
-            <p>Already have an account yet?</p>
-            <Link href='/register'>
-                <Typography>Sign in</Typography>
-            </Link>
-            <Snackbar open={isErrorOpen} onClose={handleClose}>
-                <Alert severity='error' sx={{ width: "100%" }}>
-                    Email is already taken.
-                </Alert>
-            </Snackbar>
-        </Stack>
+                <TextField
+                    id='name'
+                    name='name'
+                    label='Username'
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <AccountBoxIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{ style: inputStyle }}
+                />
+                <TextField
+                    fullWidth
+                    id='email'
+                    name='email'
+                    label='Email'
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <MailOutlineIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{ style: inputStyle }}
+                />
+                <TextField
+                    color='primary'
+                    fullWidth
+                    id='password'
+                    name='password'
+                    label='Password'
+                    type='password'
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={
+                        formik.touched.password &&
+                        Boolean(formik.errors.password)
+                    }
+                    helperText={
+                        formik.touched.password && formik.errors.password
+                    }
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <KeyIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{ style: inputStyle }}
+                />
+                <TextField
+                    color='primary'
+                    fullWidth
+                    id='confirmPassword'
+                    name='confirmPassword'
+                    label='Repeat password'
+                    type='password'
+                    value={formik.values.confirmPassword}
+                    onChange={formik.handleChange}
+                    error={
+                        formik.touched.confirmPassword &&
+                        Boolean(formik.errors.confirmPassword)
+                    }
+                    helperText={
+                        formik.touched.confirmPassword &&
+                        formik.errors.confirmPassword
+                    }
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>
+                                <KeyIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    inputProps={{ style: inputStyle }}
+                />
+                <Button
+                    type='submit'
+                    variant='contained'
+                    color='secondary'
+                    size='large'
+                    sx={{ borderRadius: "15px" }}
+                    disabled={profilePicture === undefined}>
+                    Sign up
+                </Button>
+                <p>Already have an account yet?</p>
+                <Link href='/login'>
+                    <Typography>Sign in</Typography>
+                </Link>
+                <Snackbar open={isErrorOpen} onClose={handleClose}>
+                    <Alert severity='error'>Email is already taken.</Alert>
+                </Snackbar>
+            </Stack>
+        </>
     );
 }

@@ -10,5 +10,5 @@ export default function Dashboard() {
     const auth = getAuth(app);
     const router = useRouter();
     const [user] = useAuthState(auth);
-    return <Feed />;
+    return !user ? <></> : <Feed />;
 }

@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-import {useAuth} from "@/utils/useAuth"
+import { useAuth } from "@/utils/useAuth";
 
 import {
     InputAdornment,
@@ -37,7 +37,7 @@ const validationSchema = yup.object({
 
 export default function Login() {
     const theme = useTheme((state: { theme: any }) => state.theme);
-    const inputBgColor = theme === "light" ? "#fff" : "#16181c";
+    const inputBgColor = theme === "light" ? "#fff" : "#000000";
     const inputStyle = {
         WebkitBoxShadow: `0 0 0 1000px ${inputBgColor} inset`,
     };
@@ -45,8 +45,9 @@ export default function Login() {
     const handleClose = () => {
         setIsErrorOpen(false);
     };
-
-    const {login} = useAuth();
+    const router = useRouter()
+    const auth = getAuth(app);
+    // const { login } = useAuth();
 
     const formik = useFormik({
         initialValues: {
@@ -55,20 +56,20 @@ export default function Login() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            login(values.email, values.password)
-            // handleLogin(values.email, values.password);
+            // login(values.email, values.password);
+            handleLogin(values.email, values.password);
         },
     });
-
-    //     signInWithEmailAndPassword(auth, email, password)
-    //         .then(() => {
-    //             router.push("/dashboard");
-    //         })
-    //         .catch(() => {
-    //             formik.values.password = "";
-    //             setIsErrorOpen(true);
-    //         });
-    // };
+    const handleLogin = (email: string, password: string) => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                router.push("/dashboard");
+            })
+            .catch(() => {
+                formik.values.password = "";
+                setIsErrorOpen(true);
+            });
+    };
     return (
         <>
             <Stack
