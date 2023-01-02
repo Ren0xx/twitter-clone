@@ -1,19 +1,25 @@
-import React from "react";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 import type User from "@/components/types/User";
-import { Avatar, Box, Typography, Button } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 import styles from "@/components/styles/Profile.module.css";
 import Link from "next/link";
+import Error from "@/components/Error"
 type Props = {
     user: User;
 };
 
 const UserListProfile = ({ user }: Props) => {
-    const url = process.env.NEXT_PUBLIC_BASE_URL + `/api/urls/${user.uid}`;
-    const { data: photoUrl, error } = useSWR(url, fetcher, {
-        suspense: true,
-    });
+    const { data: photoUrl, error: error } = useSWR(
+        `/api/urls/${user.uid}`,
+        fetcher,
+        {
+            suspense: true,
+        }
+    );
+    if (error) {
+        return <Error />;
+    }
 
     return (
         <Link href={`/dashboard/users/${user.uid}`} style={{ width: "100%" }}>

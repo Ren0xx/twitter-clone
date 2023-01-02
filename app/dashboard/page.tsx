@@ -1,5 +1,4 @@
 "use client";
-import Grid from "@/components/Grid";
 import Feed from "@/components/Feed/Feed";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -10,5 +9,14 @@ export default function Dashboard() {
     const auth = getAuth(app);
     const router = useRouter();
     const [user] = useAuthState(auth);
+    
+    useEffect(() => {
+        if (!user) {
+            router.push("/login");
+        }
+        if (user) {
+            router.push("/dashboard");
+        }
+    }, [user, router]);
     return !user ? <></> : <Feed />;
 }

@@ -14,10 +14,9 @@ import Link from "next/link";
 
 import { useUserStore } from "@/utils/useAuth";
 
-
 const NavbarIconsNormal = () => {
     const user = useUserStore((state) => state.user);
-    const id =  user !== null ? user.uid : 'no-user';
+    const id = user !== null ? user.uid : "no-user";
     return (
         <>
             <Button
@@ -30,6 +29,7 @@ const NavbarIconsNormal = () => {
 
             <Button
                 color='secondary'
+                disabled
                 startIcon={<TagIcon />}
                 component={Link}
                 href='/explore'>
@@ -37,6 +37,7 @@ const NavbarIconsNormal = () => {
             </Button>
             <Button
                 color='secondary'
+                disabled
                 startIcon={<NotificationsActiveIcon />}
                 component={Link}
                 href='/notifications'>
@@ -44,6 +45,7 @@ const NavbarIconsNormal = () => {
             </Button>
             <Button
                 color='secondary'
+                disabled
                 startIcon={<EmailIcon />}
                 component={Link}
                 href='/messages'>
@@ -51,6 +53,7 @@ const NavbarIconsNormal = () => {
             </Button>
             <Button
                 color='secondary'
+                disabled
                 startIcon={<BookmarkIcon />}
                 component={Link}
                 href='/bookmarks'>
@@ -58,6 +61,7 @@ const NavbarIconsNormal = () => {
             </Button>
             <Button
                 color='secondary'
+                disabled
                 startIcon={<MenuIcon />}
                 component={Link}
                 href='/lists'>
@@ -72,6 +76,7 @@ const NavbarIconsNormal = () => {
             </Button>
             <Button
                 color='secondary'
+                disabled
                 startIcon={<MoreHorizIcon />}
                 component={Link}
                 href='/more'>

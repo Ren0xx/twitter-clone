@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@mui/material";
 import useFollow from "@/utils/useFollow";
 import styles from "@/components/styles/Profile.module.css";

@@ -1,9 +1,7 @@
 import axios from "axios";
-import { Timestamp } from "firebase/firestore";
-import type Post from "@/components/types/Post";
-
+import { baseUrl } from "@/utils/baseUrl";
 const deleteTweet = async (tweetId: string) => {
-    const url = process.env.NEXT_PUBLIC_BASE_URL + `/api/posts/${tweetId}`;
+    const url = baseUrl + `/api/posts/${tweetId}`;
     try {
         await axios.delete(url);
     } catch (error) {

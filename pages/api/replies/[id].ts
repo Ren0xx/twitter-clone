@@ -3,12 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Content-Type', 'text/plain');
-  const id  = req.query.id as string;
   try {
+    const id  = req.query.id as string;
     if (req.method === 'PUT') {
       await db.collection('replies').doc(id).update({
         ...req.body
       });
+      res.status(200);
     } else if (req.method === 'GET') {
       const doc = await db.collection('replies').doc(id).get();
       if (!doc.exists) {
@@ -19,6 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     } else if (req.method === 'DELETE') {
       await db.collection('replies').doc(id).delete();
+      res.status(200);
     }
     res.status(200).end();
   } catch (e) {

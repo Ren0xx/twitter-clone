@@ -2,9 +2,9 @@ import { db } from '@/lib/firebaseAdmin.js';
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const id = req.query.id as string;
   
   try {
+    const id = req.query.id as string;
     if (req.method === 'PUT') {
       await db.collection('users').doc(id).update({
         ...req.body
@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     } else if (req.method === 'DELETE') {
       await db.collection('users').doc(id).delete();
+      res.status(200);
     }
     res.status(200).end();
   } catch (e) {

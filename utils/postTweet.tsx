@@ -1,9 +1,10 @@
 import axios from "axios";
 import { Timestamp } from "firebase/firestore";
 import type Post from "@/components/types/Post";
+import { baseUrl } from "@/utils/baseUrl";
 
 const postTweet = async (content: string, ownerId: string) => {
-    const url = process.env.NEXT_PUBLIC_BASE_URL + "/api/posts";
+    const url = baseUrl + "/api/posts";
     const postData: Post = {
         uid: "",
         owner: ownerId || "",

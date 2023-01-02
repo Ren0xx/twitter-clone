@@ -1,3 +1,4 @@
+'use client'
 import useSWRInfinite from "swr/infinite";
 
 import styles from "../styles/Feed.module.css";
@@ -16,18 +17,16 @@ import React, { lazy } from "react";
 const Tweet = lazy(() => import("./Tweet"));
 import useDebounce from "@/utils/useDebounce";
 import fetcher from "@/utils/fetcher";
-
+import Error from "@/components/Error";
 const Feed = () => {
     const { data, error, size, setSize, isValidating } = useSWRInfinite(
         (index, previousPageData) =>
-            process.env.NEXT_PUBLIC_BASE_URL +
             `/api/posts?page=${index}&limit=${
                 previousPageData ? previousPageData.length : 10
             }`,
         fetcher,
         {
             suspense: true,
-            // refreshInterval: 1000,
         }
     );
 
@@ -65,7 +64,7 @@ const Feed = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
     if (error) {
-        return <div>Something went wrong.</div>;
+        return <Error />;
     }
     return (
         <main
@@ -79,7 +78,7 @@ const Feed = () => {
                 fullWidth
                 className={styles.searchBar}
             />
-            {/* {filteredTweets.map((post: Post) => (
+            {filteredTweets?.map((post: Post) => (
                 <Tweet
                     key={uuid()}
                     uid={post.uid}
@@ -90,7 +89,7 @@ const Feed = () => {
                     timeAdded={post.timeAdded}
                 />
             ))}
-            {isValidating && <Loading />} */}
+            {isValidating && <Loading />}
         </main>
     );
 };

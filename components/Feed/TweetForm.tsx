@@ -8,28 +8,44 @@ import {
     Paper,
     Typography,
 } from "@mui/material";
+import axios from "axios";
+import {useState} from "react"
 import postTweet from "@/utils/postTweet";
+import styles from "../styles/TweetForm.module.css";
+import Loader from "@/components/Loading";
+
 import { app } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
-import styles from "../styles/TweetForm.module.css";
-
-import useSWR from "swr";
-import fetcher from "@/utils/fetcher";
-
-import { useUserStore } from "@/utils/useAuth";
 type ModalForm = {
     open: boolean;
     handleClose: () => void;
 };
+import { baseUrl } from "@/utils/baseUrl";
 
+const fetchProfilePic = async (id: string) => {
+    try {
+        const response = await axios.get(baseUrl + `/api/urls/${id}`);
+        const data = response.data;
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 const TweetForm = (props: ModalForm) => {
+    const auth = getAuth(app);
+    const [user, loading] = useAuthState(auth);
+
     const { open, handleClose } = props;
-    const user = useUserStore((state) => state.user);
-    const url = process.env.NEXT_PUBLIC_BASE_URL + `/api/urls/${user?.uid}`;
-    const { data: photoUrl } = useSWR(url, fetcher, {
-        suspense: true,
-    });
+
+    //bad - had problems with fetching with useSWR
+    const [profUrl, setProfUrl] = useState<string>("https://firebasestorage.googleapis.com/v0/b/fake-twitter0.appspot.com/o/users%2FnoUser%2Fno-user.jpg?alt=media&token=7032fd77-d574-47c1-aceb-eee961dfc1fc")
+
+    if (user !== undefined && user !== null) {
+        fetchProfilePic(user.uid).then((profileUrl) => {
+            setProfUrl(profileUrl);
+        });
+    }
     const formik = useFormik({
         initialValues: {
             tweet: "",
@@ -45,6 +61,9 @@ const TweetForm = (props: ModalForm) => {
             }
         },
     });
+    if (loading) {
+        return <Loader />;
+    }
     return (
         <>
             <Modal
@@ -57,7 +76,7 @@ const TweetForm = (props: ModalForm) => {
                     onSubmit={formik.handleSubmit}
                     style={{ width: "100%" }}
                     className={styles.form}>
-                    <Avatar src={photoUrl} alt='...' />
+                    <Avatar src={profUrl} />
                     <TextField
                         id='tweet'
                         name='tweet'

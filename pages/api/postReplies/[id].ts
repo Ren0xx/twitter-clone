@@ -1,7 +1,6 @@
 import { db } from '@/lib/firebaseAdmin.js';
 import * as admin from "firebase-admin";
 
-import { arrayUnion } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -12,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const idForTweet = db.collection("posts").doc().id; //generate id
 
       const tweetMod = await db.collection('posts').doc(tweetId).update({
-        replies: admin.firestore.FieldValue.arrayUnion(idForTweet)
+        replies: admin.firestore.FieldValue.arrayUnion(idForTweet)//add reply to user replies array
       })
       const reply = await db.collection('replies').doc(idForTweet).set({
         ...req.body
@@ -27,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const replies = doc.data()?.replies;
 
       if (!replies || replies.length === 0) {
-        res.status(200).json([  ]);
+        res.status(200).json([])
         return;
       }
 

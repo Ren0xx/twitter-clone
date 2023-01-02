@@ -1,9 +1,6 @@
 "use client";
 import React, { useMemo, useState } from "react";
-import type Post from "../types/Post";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 
@@ -36,6 +33,8 @@ import useLikeDislikeForReply from "@/utils/useLikeDislikeForReply";
 import getDayAndTime from "@/utils/dates/getDayandTime";
 import { useUserStore } from "@/utils/useAuth";
 import deleteTweet from "@/utils/deleteTweet";
+import Error from "@/components/Error"
+
 type Reply = {
     uid: string;
     owner: string;
@@ -63,15 +62,15 @@ const Reply = React.memo((props: Reply) => {
         return getDayAndTime(timeAdded.nanoseconds, timeAdded.seconds);
     }, [timeAdded.nanoseconds, timeAdded.seconds]);
 
-    const { data: ownerData } = useSWR(
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${owner}`,
+    const { data: ownerData, error: e1 } = useSWR(
+        `/api/users/${owner}`,
         fetcher,
         {
             suspense: true,
         }
     );
-    const { data: photoUrl } = useSWR(
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/urls/${owner}`,
+    const { data: photoUrl, error: e2 } = useSWR(
+        `/api/urls/${owner}`,
         fetcher,
         {
             suspense: true,
@@ -88,9 +87,7 @@ const Reply = React.memo((props: Reply) => {
         setDialogOpen(true);
         setMenuAnchor(null);
     };
-    // const handleDelete = () => {
-    //     handleMenuClose();
-    // };
+
     //dialog
     const handleDialogClose = () => {
         setDialogOpen(false);
@@ -103,6 +100,9 @@ const Reply = React.memo((props: Reply) => {
         likes,
         uid
     );
+    if (e1 || e2) {
+        return <Error />;
+    }
     return (
         <Card className={styles.card} variant='outlined'>
             <div className={styles.card__photo}>

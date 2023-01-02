@@ -15,7 +15,7 @@ import { useUserStore } from "@/utils/useAuth";
 
 const NavbarIconsSmall = () => {
     const user = useUserStore((state) => state.user);
-    const id =  user !== null ? user.uid : 'no-user';
+    const id = user !== null ? user.uid : "no-user";
     return (
         <>
             <IconButton
@@ -27,6 +27,7 @@ const NavbarIconsSmall = () => {
             </IconButton>
             <IconButton
                 color='secondary'
+                disabled
                 component={Link}
                 href='/explore'
                 title='Explore'>
@@ -34,6 +35,7 @@ const NavbarIconsSmall = () => {
             </IconButton>
             <IconButton
                 color='secondary'
+                disabled
                 component={Link}
                 href='/notifications'
                 title='Notifications'>
@@ -41,6 +43,7 @@ const NavbarIconsSmall = () => {
             </IconButton>
             <IconButton
                 color='secondary'
+                disabled
                 component={Link}
                 href='/messages'
                 title='messages'>
@@ -48,6 +51,7 @@ const NavbarIconsSmall = () => {
             </IconButton>
             <IconButton
                 color='secondary'
+                disabled
                 component={Link}
                 href='/bookmarks'
                 title='bookmarks'>
@@ -55,6 +59,7 @@ const NavbarIconsSmall = () => {
             </IconButton>
             <IconButton
                 color='secondary'
+                disabled
                 component={Link}
                 href='/lists'
                 title='lists'>
@@ -69,6 +74,7 @@ const NavbarIconsSmall = () => {
             </IconButton>
             <IconButton
                 color='secondary'
+                disabled
                 component={Link}
                 href='/more'
                 title='more'>

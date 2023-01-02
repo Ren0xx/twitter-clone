@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+import { useUserStore } from "@/utils/useAuth";
 import useTheme from "@/components/theme/theme";
 import { useRef, useState } from "react";
 import { useFormik } from "formik";
@@ -29,15 +30,18 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
+import { baseUrl } from "@/utils/baseUrl";
 import type User from "@/components/types/User";
 const validationSchema = yup.object({
     at: yup
         .string()
         .min(1, "Can't be empty")
+        .max(25, "Can't be more than 25 characters")
         .required("This field is required"),
     name: yup
         .string()
         .min(1, "Can't be empty")
+        .max(25, "Can't be more than 25 characters")
         .required("This field is required"),
     email: yup
         .string()
@@ -46,6 +50,7 @@ const validationSchema = yup.object({
     password: yup
         .string()
         .min(8, "Password should be of minimum 8 characters length")
+        .max(25, "Can't be more than 25 characters")
         .required("Password is required"),
     confirmPassword: yup
         .string()
@@ -55,6 +60,7 @@ const validationSchema = yup.object({
 export default function Register() {
     const auth = getAuth(app);
     const router = useRouter();
+    const setUser = useUserStore((s) => s.setUser);
 
     const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
     const handleClose = () => {
@@ -118,7 +124,7 @@ export default function Register() {
     };
     //sending data
     const sendUserData = async (values: any, reset: () => void) => {
-        const url = process.env.NEXT_PUBLIC_BASE_URL + "/api/users";
+        const url = baseUrl + "/api/users";
         const { at, name } = values;
         const userData: User = {
             at: at,
@@ -150,9 +156,10 @@ export default function Register() {
                 ref(storage, `/users/${uid}/profilePicture`),
                 profilePicture
             );
+            setUser({ uid: uid, email: userCredential.user.email });
             router.push("/dashboard");
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setIsErrorOpen(true);
             reset();
             setProfilePicture(undefined);

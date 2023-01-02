@@ -59,15 +59,15 @@ const Tweet = React.memo((props: Post) => {
     const dayWhenPosted = useMemo(() => {
         return getDayFromTime(timeAdded.nanoseconds, timeAdded.seconds);
     }, [timeAdded.nanoseconds, timeAdded.seconds]);
-    const { data: ownerData } = useSWR(
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${owner}`,
+    const { data: ownerData, error: e1 } = useSWR(
+        `/api/users/${owner}`,
         fetcher,
         {
             suspense: true,
         }
     );
-    const { data: photoUrl } = useSWR(
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/urls/${owner}`,
+    const { data: photoUrl, error: e2 } = useSWR(
+        `/api/urls/${owner}`,
         fetcher,
         {
             suspense: true,
@@ -86,9 +86,6 @@ const Tweet = React.memo((props: Post) => {
         setDialogOpen(true);
         setMenuAnchor(null);
     };
-    // const handleDelete = () => {
-    //     handleMenuClose();
-    // };
     //dialog
     const isOnTweetsUrl = () => {
         if (pathname !== null) {
@@ -103,13 +100,16 @@ const Tweet = React.memo((props: Post) => {
         deleteTweet(uid);
         handleDialogClose();
 
-        //check if user is deleting his tweet being on */tweets directory
+        //check if user is deleting his tweet - being on */tweets directory
         if (isOnTweetsUrl()) {
             router.push("/dashboard");
         }
     };
 
     const { isLiked, localLikes, likeOrDislike } = useLikeDislike(likes, uid);
+    if (e1 || e2) {
+        return <div></div>;
+    }
     return (
         <Card className={styles.card} variant='outlined'>
             <div className={styles.card__photo}>

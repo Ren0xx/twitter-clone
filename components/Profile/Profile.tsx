@@ -1,12 +1,5 @@
 "use client";
-import {
-    Avatar,
-    Typography,
-    Grid,
-    Button,
-    Card,
-    CardMedia,
-} from "@mui/material";
+import { Avatar, Typography, Grid, Button } from "@mui/material";
 import type User from "@/components/types/User";
 import type Post from "@/components/types/Post";
 import Tweet from "@/components/Feed/Tweet";
@@ -20,6 +13,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
+import Loader from "@/components/Loading";
+import Error from "@/components/Error"
 
 import getDayFromTime from "@/utils/dates/getDayFromTime";
 import { useUserStore } from "@/utils/useAuth";
@@ -30,37 +25,30 @@ const UserProfile = (props: User) => {
     const { uid, at, name, joinedDate, following, followers } = props;
     const date = getDayFromTime(joinedDate.nanoseconds, joinedDate.seconds);
 
-    const { data: userPosts } = useSWR(
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/userPosts/${uid}`,
-        fetcher,
-        {
-            suspense: true,
-            // refreshInterval: 100,
-        }
-    );
-    const { data: photoUrl } = useSWR(
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/urls/${uid}`,
+    const { data: userPosts, error: e1 } = useSWR(
+        `/api/userPosts/${uid}`,
         fetcher,
         {
             suspense: true,
         }
     );
+    const { data: photoUrl, error: e2 } = useSWR(`/api/urls/${uid}`, fetcher, {
+        suspense: true,
+    });
 
     const loggedUserId = useUserStore((store) => store.user?.uid) as string;
-    const loggedUserUrl =
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/users/${loggedUserId}`;
+    const loggedUserUrl = `/api/users/${loggedUserId}`;
 
-    const { data: loggedUser, error } = useSWR(loggedUserUrl, fetcher, {
-        // refreshInterval: 100,
-    });
-    if (error) {
-        return <div>An error occurred: {error.message}</div>;
-    }
-    if (!loggedUser) {
-        return <div>Loading...</div>;
-    }
+    const { data: loggedUser, error: e3 } = useSWR(loggedUserUrl, fetcher, {});
+
     const isProfileOwner = loggedUserId === uid;
 
+    if (e1 || e2 || e3) {
+        return <Error />;
+    }
+    if (!loggedUser) {
+        return <Loader />;
+    }
     return (
         <Grid container direction='column' alignItems='stretch' rowSpacing={3}>
             <Grid

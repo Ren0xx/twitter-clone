@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-import { useAuth } from "@/utils/useAuth";
+import { useUserStore } from "@/utils/useAuth";
 
 import {
     InputAdornment,
@@ -45,9 +45,9 @@ export default function Login() {
     const handleClose = () => {
         setIsErrorOpen(false);
     };
-    const router = useRouter()
+    const router = useRouter();
     const auth = getAuth(app);
-    // const { login } = useAuth();
+    const setUser = useUserStore((s) => s.setUser);
 
     const formik = useFormik({
         initialValues: {
@@ -56,13 +56,13 @@ export default function Login() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            // login(values.email, values.password);
             handleLogin(values.email, values.password);
         },
     });
     const handleLogin = (email: string, password: string) => {
         signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
+            .then((user) => {
+                setUser({ uid: user.user.uid, email: email });
                 router.push("/dashboard");
             })
             .catch(() => {

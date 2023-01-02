@@ -1,7 +1,5 @@
 .header {
     display: flex;
-    /* justify-content: flex-start;
-    align-items: center; */
     gap: 0.5em;
 }
 
@@ -10,12 +8,12 @@
 }
 
 .avatar {
-    position: relative;
-    bottom: -63%;
-    left: 8%;
-    height: 7em;
-    width: 7em;
-    border: 0.2em solid #000000;
+    position: relative !important;
+    bottom: -63% !important;
+    left: 8% !important;
+    height: 7em !important;
+    width: 7em !important;
+    border: 0.1em solid #000000;
 }
 
 .background__image {
@@ -27,10 +25,10 @@
 }
 
 .followButton {
-    position: relative;
-    left: 80%;
-    border-radius: 4em;
-    margin-top: 7em;
+    position: relative !important;
+    left: 80% !important;
+    border-radius: 4em !important;
+    margin-top: 7em !important;
 }
 
 .flinks {

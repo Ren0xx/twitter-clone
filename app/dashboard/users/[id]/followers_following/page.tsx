@@ -1,45 +1,44 @@
 "use client";
-import Link from "next/link";
+
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 import { AppBar, Button, Tabs, Tab } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import Error from "@/components/Error";
+import Loader from "@/components/Loading";
 import UserList from "@/components/Profile/UserList";
 
 const FollowersFollowing = () => {
     const router = useRouter();
     const [selectedTab, setSelectedTab] = useState<string>("followers");
     const pathname = usePathname();
-    const userId = pathname !== null ? pathname.split("/")[3] : "no-user";
+    const userId =
+        pathname !== null && pathname.split("/")[3]
+            ? pathname.split("/")[3]
+            : "no-user";
 
-    const userUrlFwr =
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/userFollowers/${userId}`;
-    const userUrlFlg =
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/userFollowing/${userId}`;
-
-    const { data: followersData, error: FwrError } = useSWR(
-        userUrlFwr,
+    const { data: followersData, error: e1 } = useSWR(
+        `/api/userFollowers/${userId}`,
         fetcher,
         {
             suspense: true,
         }
     );
-    const { data: followingData, error: FlgError } = useSWR(
-        userUrlFlg,
+    const { data: followingData, error: e2 } = useSWR(
+        `/api/userFollowing/${userId}`,
         fetcher,
         {
             suspense: true,
         }
     );
 
-    if (FwrError || FlgError) {
-        return <div>An error occurred</div>;
+    if (e1 || e2) {
+        return <Error />;
     }
     if (!followersData || !followingData) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
     return (
         <>

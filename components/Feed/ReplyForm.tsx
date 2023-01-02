@@ -1,7 +1,3 @@
-import useSWR from "swr";
-import fetcher from "@/utils/fetcher";
-import { useUserStore } from "@/utils/useAuth";
-
 import styles from "@/components/styles/ReplyForm.module.css";
 import { Avatar, Box, TextField, Typography, Button } from "@mui/material";
 
@@ -12,12 +8,36 @@ import postReply from "@/utils/postReply";
 type PostProps = {
     postId: string;
 };
+import axios from "axios";
+import { useState } from "react";
+import { baseUrl } from "@/utils/baseUrl";
+import Loader from "@/components/Loading";
+import { app } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
+
+const fetchProfilePic = async (id: string) => {
+    try {
+        const response = await axios.get(baseUrl + `/api/urls/${id}`);
+        const data = response.data;
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 const ReplyForm = ({ postId }: PostProps) => {
-    const user = useUserStore((state) => state.user);
-    const url = process.env.NEXT_PUBLIC_BASE_URL + `/api/urls/${user?.uid}`;
-    const { data: photoUrl } = useSWR(url, fetcher, {
-        suspense: true,
-    });
+    const auth = getAuth(app);
+    const [user, loading] = useAuthState(auth);
+
+    //bad- had problems with fetching with useSWR
+    const [profUrl, setProfUrl] = useState<string>(
+        "https://firebasestorage.googleapis.com/v0/b/fake-twitter0.appspot.com/o/users%2FnoUser%2Fno-user.jpg?alt=media&token=7032fd77-d574-47c1-aceb-eee961dfc1fc"
+    );
+    if (user !== undefined && user !== null) {
+        fetchProfilePic(user.uid).then((profileUrl) => {
+            setProfUrl(profileUrl);
+        });
+    }
     const formik = useFormik({
         initialValues: {
             reply: "",
@@ -32,6 +52,9 @@ const ReplyForm = ({ postId }: PostProps) => {
             }
         },
     });
+    if (loading) {
+        return <Loader />;
+    }
     return (
         <Box
             className={styles.form}
@@ -39,7 +62,7 @@ const ReplyForm = ({ postId }: PostProps) => {
             onSubmit={formik.handleSubmit}
             sx={{ mt: "3em" }}>
             <Box className={styles.form__left}>
-                <Avatar src={photoUrl} />
+                <Avatar src={profUrl} />
                 <Typography variant='body2'>
                     {formik.values.reply.length}/280
                 </Typography>

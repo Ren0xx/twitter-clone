@@ -1,10 +1,10 @@
-import React from "react";
 import { Timestamp } from "firebase/firestore";
-
 import axios from "axios";
+import { baseUrl } from "@/utils/baseUrl";
+
 const postReply = async (content: string, tweetId: string, ownerId: string) => {
     const url =
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/postReplies/${tweetId}`;
+        baseUrl + `/api/postReplies/${tweetId}`;
     const replyData = {
         uid: "",
         owner: ownerId || "",

@@ -3,11 +3,12 @@ import { lazy } from "react";
 const Tweet = lazy(() => import("@/components/Feed/Tweet"));
 const Reply = lazy(() => import("@/components/Profile/Reply"));
 
+import Error from "@/components/Error";
+import Loader from "@/components/Loading";
 import uuid from "react-uuid";
 import fetcher from "@/utils/fetcher";
 import useSWR from "swr";
 import { usePathname, useRouter } from "next/navigation";
-import Loader from "@/components/Loading";
 import type Post from "@/components/types/Post";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Button, Box, Typography } from "@mui/material";
@@ -16,25 +17,29 @@ import ReplyForm from "@/components/Feed/ReplyForm";
 export default function Post() {
     const pathname = usePathname();
     const router = useRouter();
-    const postId = pathname !== null ? pathname.split("/")[3] : "no-post";
-
-    const url = process.env.NEXT_PUBLIC_BASE_URL + `/api/posts/${postId}`;
-    const repliesUrl =
-        process.env.NEXT_PUBLIC_BASE_URL + `/api/postReplies/${postId}`;
-    const { data: tweetData, error: tweetError } = useSWR(url, fetcher, {
-        suspense: true,
-    });
-    const { data: repliesData, error: repliesError } = useSWR(
-        repliesUrl,
+    const postId =
+        pathname !== null && pathname.split("/")[3]
+            ? pathname.split("/")[3]
+            : "no-post";
+    const { data: tweetData, error: e1 } = useSWR(
+        `/api/posts/${postId}`,
+        fetcher,
+        {
+            suspense: true,
+        }
+    );
+    const { data: repliesData, error: e2 } = useSWR(
+        `/api/postReplies/${postId}`,
         fetcher,
         { suspense: true }
     );
+    if (e1 || e2) {
+        return <Error />;
+    }
     if (!tweetData || !repliesData) {
         return <Loader />;
     }
-    if (tweetError || repliesError) {
-        return <p>Error loading data</p>;
-    }
+
     return (
         <>
             <Box sx={{ display: "flex", columnGap: "1em", margin: "0.7em" }}>
@@ -54,7 +59,7 @@ export default function Post() {
                 timeAdded={tweetData.timeAdded}
             />
             <ReplyForm postId={postId} />
-            {repliesData.map((reply: any) => (
+            {repliesData?.map((reply: any) => (
                 <Reply
                     key={uuid()}
                     uid={reply.uid}

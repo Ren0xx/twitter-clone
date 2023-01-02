@@ -1,11 +1,10 @@
 import create from 'zustand';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import {app } from "../firebaseConfig"
 
 import {useRouter} from 'next/navigation'
 export interface User {
-  // Add the properties for your user object here
   uid: string;
   email: string |null;
 }
@@ -22,20 +21,9 @@ export const useUserStore = create<{
 export const useAuth = () => {
   const auth = getAuth(app);
   const router = useRouter();
-  const { setUser, resetUser } = useUserStore();
-
-  const login = async (email: string, password: string) => {
-    try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      const user = result.user;
-      setUser({
-        uid: user.uid,
-        email: user.email,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
+  const setUser = useUserStore((s) => s.setUser)
+  const resetUser = useUserStore((s) => s.resetUser)
 
   const logout = async () => {
     try {
@@ -46,20 +34,7 @@ export const useAuth = () => {
     }
   };
 
-  const register = async (email: string, password: string) => {
-    try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      const user = result.user;
-      setUser({
-        uid: user.uid,
-        email: user.email,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Automatically login the user if they are already authenticated
+   // Automatically login the user if they are already authenticated
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -73,11 +48,8 @@ export const useAuth = () => {
         router.push('/login');
       }
     });
-    // return () => {
-    //   unsubscribe();
-    // }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { login, logout, register };
+  return { logout };
 }
