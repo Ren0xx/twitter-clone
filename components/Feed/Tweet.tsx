@@ -19,6 +19,7 @@ import {
     Button,
     MenuItem,
     IconButton,
+    TextField,
     ListItemIcon,
     ListItemText,
     Dialog,
@@ -32,12 +33,13 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ClearIcon from "@mui/icons-material/Clear";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RepeatIcon from "@mui/icons-material/Repeat";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
 import useLikeDislike from "@/utils/useLikeDislike";
 import getDayFromTime from "@/utils/dates/getDayFromTime";
 import { useUserStore } from "@/utils/useAuth";
 import deleteTweet from "@/utils/deleteTweet";
+import editTweet from "@/utils/editTweet";
 
 import { usePathname } from "next/navigation";
 const areEqual = (prevProps: Post, nextProps: Post) => {
@@ -99,6 +101,7 @@ const Tweet = React.memo((props: Post) => {
     const handleDialogClose = () => {
         setDialogOpen(false);
     };
+    //deletion
     const handleConfirm = () => {
         deleteTweet(uid);
         handleDialogClose();
@@ -109,7 +112,24 @@ const Tweet = React.memo((props: Post) => {
         }
     };
 
+    //edititon
+    const [editModeOn, setEditModeOn] = useState<boolean>(false);
+    const [tweetContent, setTweetContent] = useState<string>(content);
+
+    const onEditClicked = () => {
+        setEditModeOn(true);
+    };
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTweetContent(event.target.value);
+    };
+    const onSave = () => {
+        setEditModeOn(false); // close edition
+        if (tweetContent === content) return; //if content is the same, dont make request
+        editTweet(tweetContent, uid); //send request
+        router.refresh();
+    };
     const { isLiked, localLikes, likeOrDislike } = useLikeDislike(likes, uid);
+
     if (e1 || e2) {
         return <div></div>;
     }
@@ -138,6 +158,18 @@ const Tweet = React.memo((props: Post) => {
                         <Typography variant='subtitle1' color='textSecondary'>
                             {dayWhenPosted}
                         </Typography>
+                        <Button
+                            id='saveButton'
+                            variant='outlined'
+                            color='success'
+                            size='small'
+                            onClick={onSave}
+                            sx={{
+                                ml: "auto",
+                                display: editModeOn ? "block" : "none",
+                            }}>
+                            Save
+                        </Button>
                         {user?.uid === owner && (
                             <IconButton
                                 sx={{ ml: "auto" }}
@@ -164,14 +196,14 @@ const Tweet = React.memo((props: Post) => {
                                 </ListItemIcon>
                                 <ListItemText>Delete</ListItemText>
                             </MenuItem>
-                            <MenuItem disableRipple >
+                            <MenuItem disableRipple onClick={onEditClicked}>
                                 <ListItemIcon>
                                     <EditIcon />
                                 </ListItemIcon>
                                 <ListItemText>Edit</ListItemText>
                             </MenuItem>
                         </Menu>
-                        {/* Confirmation dialog */}
+                        {/* Deletion confirmation dialog */}
                         <Dialog open={dialogOpen} onClose={handleDialogClose}>
                             <DialogTitle>Confirmation</DialogTitle>
                             <DialogContent>
@@ -188,19 +220,37 @@ const Tweet = React.memo((props: Post) => {
                         </Dialog>
                     </div>
                 </CardContent>
-                <CardActionArea disableRipple onClick={redirectToPost}>
-                    <Typography
-                        component='p'
-                        variant='body2'
-                        sx={{
-                            wordWrap: "break-word",
-                            wordBreak: "break-all",
-                        }}>
-                        {content.length < 150
-                            ? content
-                            : content.substring(0, 150) + "..."}
-                    </Typography>
-                </CardActionArea>
+                {!editModeOn ? (
+                    <CardActionArea disableRipple onClick={redirectToPost}>
+                        <Typography
+                            component='p'
+                            variant='body2'
+                            sx={{
+                                wordWrap: "break-word",
+                                wordBreak: "break-all",
+                            }}>
+                            {content.length < 150
+                                ? content
+                                : content.substring(0, 150) + "..."}
+                        </Typography>
+                    </CardActionArea>
+                ) : (
+                    <TextField
+                        id='tweetEdition'
+                        name='tweetEdition'
+                        multiline
+                        rows={4}
+                        value={tweetContent}
+                        onChange={handleChange}
+                        fullWidth
+                        variant='outlined'
+                        InputProps={{
+                            inputProps: {
+                                maxLength: 280,
+                            },
+                        }}
+                    />
+                )}
             </div>
             <CardActions className={styles.card__bottom}>
                 <div>

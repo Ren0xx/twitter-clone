@@ -22,6 +22,7 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    TextField,
 } from "@mui/material";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -29,11 +30,15 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ClearIcon from "@mui/icons-material/Clear";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RepeatIcon from "@mui/icons-material/Repeat";
+import EditIcon from "@mui/icons-material/Edit";
+
 import useLikeDislikeForReply from "@/utils/useLikeDislikeForReply";
 import getDayAndTime from "@/utils/dates/getDayandTime";
 import { useUserStore } from "@/utils/useAuth";
+import { useRouter } from "next/navigation";
 import deleteTweet from "@/utils/deleteTweet";
-import Error from "@/components/Error"
+import editReply from "@/utils/editReply";
+import Error from "@/components/Error";
 
 type Reply = {
     uid: string;
@@ -56,6 +61,7 @@ const areEqual = (prevProps: Reply, nextProps: Reply) => {
 };
 const Reply = React.memo((props: Reply) => {
     const user = useUserStore((state) => state.user);
+    const router = useRouter();
     const { uid, likes, owner, content, timeAdded } = props;
 
     const dayWhenPosted = useMemo(() => {
@@ -96,6 +102,22 @@ const Reply = React.memo((props: Reply) => {
         deleteTweet(uid);
         handleDialogClose();
     };
+    //edititon
+    const [editModeOn, setEditModeOn] = useState<boolean>(false);
+    const [tweetContent, setTweetContent] = useState<string>(content);
+
+    const onEditClicked = () => {
+        setEditModeOn(true);
+    };
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTweetContent(event.target.value);
+    };
+    const onSave = () => {
+        setEditModeOn(false); // close edition
+        if (tweetContent === content) return; //if content is the same, dont make request
+        editReply(tweetContent, uid); //send request
+        router.refresh();
+    };
     const { isLiked, localLikes, likeOrDislike } = useLikeDislikeForReply(
         likes,
         uid
@@ -128,6 +150,18 @@ const Reply = React.memo((props: Reply) => {
                         <Typography variant='subtitle1' color='textSecondary'>
                             {dayWhenPosted}
                         </Typography>
+                        <Button
+                            id='saveButton'
+                            variant='outlined'
+                            color='success'
+                            size='small'
+                            onClick={onSave}
+                            sx={{
+                                ml: "auto",
+                                display: editModeOn ? "block" : "none",
+                            }}>
+                            Save
+                        </Button>
                         {user?.uid === owner && (
                             <IconButton
                                 sx={{ ml: "auto" }}
@@ -154,6 +188,12 @@ const Reply = React.memo((props: Reply) => {
                                 </ListItemIcon>
                                 <ListItemText>Delete</ListItemText>
                             </MenuItem>
+                            <MenuItem disableRipple onClick={onEditClicked}>
+                                <ListItemIcon>
+                                    <EditIcon />
+                                </ListItemIcon>
+                                <ListItemText>Edit</ListItemText>
+                            </MenuItem>
                         </Menu>
                         {/* Confirmation dialog */}
                         <Dialog open={dialogOpen} onClose={handleDialogClose}>
@@ -172,19 +212,37 @@ const Reply = React.memo((props: Reply) => {
                         </Dialog>
                     </div>
                 </CardContent>
-                <CardActionArea disableRipple>
-                    <Typography
-                        component='p'
-                        variant='body2'
-                        sx={{
-                            wordWrap: "break-word",
-                            wordBreak: "break-all",
-                        }}>
-                        {content.length < 150
-                            ? content
-                            : content.substring(0, 150) + "..."}
-                    </Typography>
-                </CardActionArea>
+                {!editModeOn ? (
+                    <CardActionArea disableRipple>
+                        <Typography
+                            component='p'
+                            variant='body2'
+                            sx={{
+                                wordWrap: "break-word",
+                                wordBreak: "break-all",
+                            }}>
+                            {content.length < 150
+                                ? content
+                                : content.substring(0, 150) + "..."}
+                        </Typography>
+                    </CardActionArea>
+                ) : (
+                    <TextField
+                        id='tweetEdition'
+                        name='tweetEdition'
+                        multiline
+                        rows={4}
+                        value={tweetContent}
+                        onChange={handleChange}
+                        fullWidth
+                        variant='outlined'
+                        InputProps={{
+                            inputProps: {
+                                maxLength: 280,
+                            },
+                        }}
+                    />
+                )}
             </div>
             <CardActions className={styles.card__bottom}>
                 <div>
