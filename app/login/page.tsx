@@ -75,7 +75,6 @@ export default function Login() {
             <Stack
                 autoComplete='off'
                 spacing={5}
-                sx={{ width: "25rem" }}
                 component='form'
                 onSubmit={formik.handleSubmit}>
                 <TwitterIcon fontSize='large' />

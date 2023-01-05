@@ -32,6 +32,8 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ClearIcon from "@mui/icons-material/Clear";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RepeatIcon from "@mui/icons-material/Repeat";
+import EditIcon from '@mui/icons-material/Edit';
+
 import useLikeDislike from "@/utils/useLikeDislike";
 import getDayFromTime from "@/utils/dates/getDayFromTime";
 import { useUserStore } from "@/utils/useAuth";
@@ -78,6 +80,7 @@ const Tweet = React.memo((props: Post) => {
     };
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+
     //menu
     const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setMenuAnchor(event.currentTarget);
@@ -160,6 +163,12 @@ const Tweet = React.memo((props: Post) => {
                                     <ClearIcon />
                                 </ListItemIcon>
                                 <ListItemText>Delete</ListItemText>
+                            </MenuItem>
+                            <MenuItem disableRipple >
+                                <ListItemIcon>
+                                    <EditIcon />
+                                </ListItemIcon>
+                                <ListItemText>Edit</ListItemText>
                             </MenuItem>
                         </Menu>
                         {/* Confirmation dialog */}

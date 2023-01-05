@@ -1,10 +1,6 @@
 "use client";
 import styles from "@/styles/LoginPage.module.css";
-import {
-    
-    Container,
-    Paper,
-} from "@mui/material";
+import { Container, Paper } from "@mui/material";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -14,6 +10,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100vh",
+                my: "3em",
             }}>
             <Paper className={styles.login__card} variant='outlined'>
                 {children}

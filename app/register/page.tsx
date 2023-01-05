@@ -168,11 +168,7 @@ export default function Register() {
 
     return (
         <>
-            <Stack
-                spacing={3}
-                sx={{ width: "25rem" }}
-                component='form'
-                onSubmit={formik.handleSubmit}>
+            <Stack spacing={3} component='form' onSubmit={formik.handleSubmit}>
                 <TwitterIcon fontSize='large' />
                 <Typography variant='h4'>Create an account</Typography>
                 <Button
