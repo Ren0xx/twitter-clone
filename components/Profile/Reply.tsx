@@ -33,11 +33,10 @@ import RepeatIcon from "@mui/icons-material/Repeat";
 import EditIcon from "@mui/icons-material/Edit";
 
 import useLike from "@/utils/useLike";
-import useLikeDislikeForReply from "@/utils/useLikeDislikeForReply";
 import getDayAndTime from "@/utils/dates/getDayandTime";
 import { useUserStore } from "@/utils/useAuth";
 import { useRouter } from "next/navigation";
-import deleteTweet from "@/utils/deleteTweet";
+import deleteReply from "@/utils/deleteReply";
 import editReply from "@/utils/editReply";
 import Error from "@/components/Error";
 
@@ -100,7 +99,7 @@ const Reply = React.memo((props: Reply) => {
         setDialogOpen(false);
     };
     const handleConfirm = () => {
-        deleteTweet(uid);
+        deleteReply(uid);
         handleDialogClose();
     };
     //edititon
@@ -119,10 +118,6 @@ const Reply = React.memo((props: Reply) => {
         editReply(tweetContent, uid); //send request
         router.refresh();
     };
-    // const { isLiked, localLikes, likeOrDislike } = useLikeDislikeForReply(
-    //     likes,
-    //     uid
-    // );
     const { isLiked, likeOrDislike } = useLike(uid, user?.uid, likes, 'replies');
     if (e1 || e2) {
         return <Error />;
