@@ -10,7 +10,7 @@ const postTweet = async (content: string, ownerId: string) => {
         owner: ownerId || "",
         content: content,
         timeAdded: Timestamp.now(),
-        likes: 0,
+        likes: [],
         replies: [],
     };
     try {

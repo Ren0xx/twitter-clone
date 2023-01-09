@@ -9,7 +9,7 @@ type PostProps = {
     postId: string;
 };
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { baseUrl } from "@/utils/baseUrl";
 import Loader from "@/components/Loading";
 import { app } from "../../firebaseConfig";
@@ -33,11 +33,14 @@ const ReplyForm = ({ postId }: PostProps) => {
     const [profUrl, setProfUrl] = useState<string>(
         "https://firebasestorage.googleapis.com/v0/b/fake-twitter0.appspot.com/o/users%2FnoUser%2Fno-user.jpg?alt=media&token=7032fd77-d574-47c1-aceb-eee961dfc1fc"
     );
-    if (user !== undefined && user !== null) {
-        fetchProfilePic(user.uid).then((profileUrl) => {
-            setProfUrl(profileUrl);
-        });
-    }
+    useEffect(() => {
+        if (user !== undefined && user !== null) {
+            fetchProfilePic(user.uid).then((profileUrl) => {
+                setProfUrl(profileUrl);
+            });
+        }
+    }, [user]);
+
     const formik = useFormik({
         initialValues: {
             reply: "",

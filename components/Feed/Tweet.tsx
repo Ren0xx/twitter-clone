@@ -35,7 +35,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import EditIcon from "@mui/icons-material/Edit";
 
-import useLikeDislike from "@/utils/useLikeDislike";
+import useLike from "@/utils/useLike";
 import getDayFromTime from "@/utils/dates/getDayFromTime";
 import { useUserStore } from "@/utils/useAuth";
 import deleteTweet from "@/utils/deleteTweet";
@@ -128,8 +128,7 @@ const Tweet = React.memo((props: Post) => {
         editTweet(tweetContent, uid); //send request
         router.refresh();
     };
-    const { isLiked, localLikes, likeOrDislike } = useLikeDislike(likes, uid);
-
+    const { isLiked, likeOrDislike } = useLike(uid, user?.uid, likes, 'posts');
     if (e1 || e2) {
         return <div></div>;
     }
@@ -270,7 +269,7 @@ const Tweet = React.memo((props: Post) => {
                         color={isLiked ? "error" : "secondary"}
                     />
                     <Typography color={isLiked ? "error" : "secondary"}>
-                        {localLikes}
+                        {likes.length}
                     </Typography>
                 </div>
             </CardActions>

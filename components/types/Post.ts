@@ -3,7 +3,7 @@ type Post = {
     owner: string;
     timeAdded: {seconds: number, nanoseconds: number};
     content: string;
-    likes: number;
+    likes: string[];
     replies: string[];
 
 }

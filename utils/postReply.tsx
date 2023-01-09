@@ -10,7 +10,7 @@ const postReply = async (content: string, tweetId: string, ownerId: string) => {
         owner: ownerId || "",
         content: content,
         timeAdded: Timestamp.now(),
-        likes: 0,
+        likes: [],
     };
     try {
       await axios.put(url, replyData)

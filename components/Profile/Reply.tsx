@@ -32,6 +32,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import EditIcon from "@mui/icons-material/Edit";
 
+import useLike from "@/utils/useLike";
 import useLikeDislikeForReply from "@/utils/useLikeDislikeForReply";
 import getDayAndTime from "@/utils/dates/getDayandTime";
 import { useUserStore } from "@/utils/useAuth";
@@ -45,7 +46,7 @@ type Reply = {
     owner: string;
     timeAdded: { seconds: number; nanoseconds: number };
     content: string;
-    likes: number;
+    likes: string[];
 };
 
 const areEqual = (prevProps: Reply, nextProps: Reply) => {
@@ -118,10 +119,11 @@ const Reply = React.memo((props: Reply) => {
         editReply(tweetContent, uid); //send request
         router.refresh();
     };
-    const { isLiked, localLikes, likeOrDislike } = useLikeDislikeForReply(
-        likes,
-        uid
-    );
+    // const { isLiked, localLikes, likeOrDislike } = useLikeDislikeForReply(
+    //     likes,
+    //     uid
+    // );
+    const { isLiked, likeOrDislike } = useLike(uid, user?.uid, likes, 'replies');
     if (e1 || e2) {
         return <Error />;
     }
@@ -258,7 +260,7 @@ const Reply = React.memo((props: Reply) => {
                         color={isLiked ? "error" : "secondary"}
                     />
                     <Typography color={isLiked ? "error" : "secondary"}>
-                        {localLikes}
+                        {likes.length}
                     </Typography>
                 </div>
             </CardActions>
