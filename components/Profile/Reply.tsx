@@ -35,7 +35,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import useLike from "@/utils/useLike";
 import getDayAndTime from "@/utils/dates/getDayandTime";
 import { useUserStore } from "@/utils/useAuth";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import deleteReply from "@/utils/deleteReply";
 import editReply from "@/utils/editReply";
 import Error from "@/components/Error";
@@ -62,6 +62,13 @@ const areEqual = (prevProps: Reply, nextProps: Reply) => {
 const Reply = React.memo((props: Reply) => {
     const user = useUserStore((state) => state.user);
     const router = useRouter();
+    const pathname = usePathname();
+
+    const parentTweetId =
+        pathname !== null && pathname.split("/")[3]
+            ? pathname.split("/")[3]
+            : "";
+
     const { uid, likes, owner, content, timeAdded } = props;
 
     const dayWhenPosted = useMemo(() => {
@@ -99,7 +106,7 @@ const Reply = React.memo((props: Reply) => {
         setDialogOpen(false);
     };
     const handleConfirm = () => {
-        deleteReply(uid);
+        deleteReply(uid, parentTweetId);
         handleDialogClose();
     };
     //edititon
@@ -118,7 +125,12 @@ const Reply = React.memo((props: Reply) => {
         editReply(tweetContent, uid); //send request
         router.refresh();
     };
-    const { isLiked, likeOrDislike } = useLike(uid, user?.uid, likes, 'replies');
+    const { isLiked, likeOrDislike } = useLike(
+        uid,
+        user?.uid,
+        likes,
+        "replies"
+    );
     if (e1 || e2) {
         return <Error />;
     }

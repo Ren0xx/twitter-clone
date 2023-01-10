@@ -1,4 +1,5 @@
 import { db } from '@/lib/firebaseAdmin.js';
+import * as admin from "firebase-admin";
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -19,6 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(200).json({ ...data, uid:id });
       }
     } else if (req.method === 'DELETE') {
+      const parentId  = req.query.parentId as string;
+      //remove reply from posts.reply array
+      const tweetMod = await db.collection('posts').doc(parentId).update({
+        replies: admin.firestore.FieldValue.arrayRemove(id)
+      })
       await db.collection('replies').doc(id).delete();
       res.status(200);
     }
