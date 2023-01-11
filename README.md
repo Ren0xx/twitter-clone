@@ -14,8 +14,8 @@ I created this Twitter clone to learn as much as I could about Next.js, Typescri
 Deployed on [Vercel](https://vercel.com)
 
 ## Features
-    Create and delete tweets
-    Add replies
+    Create, edit and delete tweets
+    Create, edit and delete replies
     Like or dislike
     Follow other users
     Search feed based on tweets content
@@ -35,7 +35,7 @@ Deployed on [Vercel](https://vercel.com)
 
 ## Future development
 
-    Better liking system
+    Better liking system ✔️
     Implement a search feature to find other users
     Ability to modify more things in profile etc.
     
