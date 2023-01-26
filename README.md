@@ -6,10 +6,7 @@ I created this Twitter clone to learn as much as I could about Next.js, Typescri
 ## Built with:
 -   [Next.js](https://nextjs.org/)
 -   [Typescript](https://www.typescriptlang.org/)
--   [Formik](https://formik.org)
 -   [Material UI](https://mui.com/)
--   [Firebase](https://firebase.google.com/)
--   [Zustand](https://github.com/pmndrs/zustand)
 
 Deployed on [Vercel](https://vercel.com)
     
