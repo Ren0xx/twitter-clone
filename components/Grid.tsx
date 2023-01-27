@@ -12,6 +12,7 @@ const Grid = ({ children }: { children: React.ReactNode }) => {
                 sx={{
                     position: "sticky",
                     top: "0.8rem",
+                    height: "100vh",
                 }}
                 item
                 xs={3}>

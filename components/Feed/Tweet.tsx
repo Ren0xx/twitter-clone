@@ -8,6 +8,7 @@ import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 
 import styles from "@/styles/Feed.module.css";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
     Card,
     CardContent,
@@ -128,6 +129,7 @@ const Tweet = React.memo((props: Post) => {
         editTweet(tweetContent, uid); //send request
         router.refresh();
     };
+    const notSmallSc = useMediaQuery((theme:any) => theme.breakpoints.up('sm'));
     const { isLiked, likeOrDislike } = useLike(uid, user?.uid, likes, 'posts');
     if (e1 || e2) {
         return <div></div>;
@@ -154,9 +156,11 @@ const Tweet = React.memo((props: Post) => {
                             color='textSecondary'>
                             @{ownerData.at}
                         </Typography>
-                        <Typography variant='subtitle1' color='textSecondary'>
+                        {notSmallSc && (
+                            <Typography variant='subtitle1' color='textSecondary'>
                             {dayWhenPosted}
                         </Typography>
+                            )}
                         <Button
                             id='saveButton'
                             variant='outlined'

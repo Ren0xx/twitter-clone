@@ -25,7 +25,6 @@ const Sidebar = () => {
                     href='https://github.com/Ren0xx'>
                     Github
                 </Typography>
-                .
             </Box>
         </Paper>
     );

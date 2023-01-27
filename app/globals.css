@@ -15,4 +15,9 @@ a {
 
 * {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.MuiContainer-root{
+  padding-right: 0;
 }

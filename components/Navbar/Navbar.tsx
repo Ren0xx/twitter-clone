@@ -17,7 +17,7 @@ const Navbar = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const {  logout } = useAuth();
+    const { logout } = useAuth();
     return (
         <div className={styles.menu}>
             <div className={styles.icons__top}>
@@ -25,11 +25,7 @@ const Navbar = () => {
                 <ThemeSwitchButton />
             </div>
             <NoSsr>
-                {smDown ? (
-                    <NavbarIconsSmall  />
-                ) : (
-                    <NavbarIconsNormal  />
-                )}
+                {smDown ? <NavbarIconsSmall /> : <NavbarIconsNormal />}
             </NoSsr>
             <Button
                 variant='contained'
@@ -43,7 +39,7 @@ const Navbar = () => {
                 Tweet
             </Button>
             <Button
-                sx={{ mt: "20em", maxWidth: "8em" }}
+                sx={{ position: "absolute", bottom: 25, maxWidth: "8em" }}
                 onClick={logout}
                 variant='outlined'
                 size='small'>
